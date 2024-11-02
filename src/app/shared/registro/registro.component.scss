@@ -1,0 +1,19 @@
+.titulo-reg{
+ align-self: center;
+}
+.mat-mdc-raised-button {
+    font-size: 1.8vw;
+  }
+.registro {
+  display: flex;
+  flex-direction: column;
+  gap: 5px; /* Espacio entre los inputs */
+  justify-content: space-between;
+  }
+.boton-reg-cont{
+  display: flex;
+  justify-content: space-between;
+}
+.boton-reg{
+  font-size: 1.6vw
+}

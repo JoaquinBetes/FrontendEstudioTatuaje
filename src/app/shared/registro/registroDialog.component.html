@@ -1,0 +1,48 @@
+
+  <div class="titulo-reg"><h2 mat-dialog-title>Registrase</h2></div>
+  <mat-dialog-content class="registro">
+    <mat-form-field hintLabel="Max 8 números">
+      <mat-label>DNI</mat-label>
+      <input id="dni" matInput #input maxlength="8" (input)="onInputDni($event)" type="number" [(ngModel)]="dni" class="example-right-align"/>
+      <mat-hint align="end">{{value().length}}/8</mat-hint>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Nombre completo</mat-label>
+      <input id="nombreCompleto"  [(ngModel)]="nombreCompleto" matInput>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Enter your email</mat-label>
+      <input
+        id="email"
+        matInput
+        placeholder="pat@example.com"
+        [formControl]="email"
+        (blur)="updateErrorMessage()"
+        required
+      />
+      @if (email.invalid) {
+        <mat-error>{{errorMessage()}}</mat-error>
+      }
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Telefono</mat-label>
+      <input id="telefono" [(ngModel)]="telefono" matInput #input  type="number" class="example-right-align" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>contraseña</mat-label>
+      <input id="contrasenia" [(ngModel)]="contrasenia" matInput [type]="hide() ? 'password' : 'text'" />
+      <button
+        mat-icon-button
+        matSuffix
+        (click)="clickEvent($event)"
+        [attr.aria-label]="'Hide password'"
+        [attr.aria-pressed]="hide()"
+      >
+        <mat-icon>{{hide() ? 'visibility_off' : 'visibility'}}</mat-icon>
+      </button>
+    </mat-form-field>
+  </mat-dialog-content>
+  <mat-dialog-actions class="boton-reg-cont">
+    <button class="boton-reg" mat-button mat-dialog-close>Cancelar</button>
+    <button class="boton-reg" mat-button (click)="register()" cdkFocusInitial>Confirmar</button>
+  </mat-dialog-actions>
