@@ -5,7 +5,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
 import {HttpClient} from '@angular/common/http';
-import {ventanaDialog} from '../ventana/ventana.component.js';
+import {ventanaDialog} from '../shared/ventana/ventana.component.js';
 import {
   MatDialog,
   MatDialogActions,
@@ -17,6 +17,7 @@ import {
 import {merge}  from 'rxjs';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {FormControl, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import { Router } from '@angular/router';
 
 interface ClienteResponse {
   message: string;
@@ -32,20 +33,20 @@ interface ClienteResponse {
 }
 
 @Component({
-  selector: 'app-registro',
+  selector: 'app-ingresar-button',
   standalone: true,
   imports: [MatButtonModule, FormsModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl: './registro.component.html',
-  styleUrl: './registro.component.scss'
+  templateUrl: './ingresar.component.html',
+  styleUrl: './ingresar.component.scss'
 })
-export class RegistroComponent {
+export class IngresarComponent {
   readonly dialog = inject(MatDialog);
 
   openDialog(enterAnimationDuration: string, exitAnimationDuration: string): void {
-    this.dialog.open(RegistroComponentDialog, {
-      width: '50%',
-      height: '90%',
+    this.dialog.open(IngresarComponentDialog, {
+      width: '40%',
+      height: '70%',
       enterAnimationDuration,
       exitAnimationDuration,
     });
@@ -53,7 +54,7 @@ export class RegistroComponent {
 }
 
 @Component({
-  selector: 'app-registro-dialog',
+  selector: 'app-ingreso-dialog',
   standalone: true,
   imports: [
     MatButtonModule,
@@ -69,11 +70,11 @@ export class RegistroComponent {
     MatDialogTitle,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl: './registroDialog.component.html',
-  styleUrl: './registro.component.scss'
+  templateUrl: './ingresarDialog.component.html',
+  styleUrl: './ingresar.component.scss'
 })
-export class RegistroComponentDialog {
-  readonly dialogRef = inject(MatDialogRef<RegistroComponentDialog>);
+export class IngresarComponentDialog {
+  readonly dialogRef = inject(MatDialogRef<IngresarComponentDialog>);
   dialog = inject(MatDialog);
 
   http = inject(HttpClient)
@@ -98,7 +99,7 @@ export class RegistroComponentDialog {
 
   errorMessage = signal('');
 
-  constructor() {
+  constructor(private router: Router) {
     merge(this.email.statusChanges, this.email.valueChanges)
       .pipe(takeUntilDestroyed())
       .subscribe(() => this.updateErrorMessage());
@@ -128,10 +129,18 @@ export class RegistroComponentDialog {
       estado:0,
       contraseña: this.contrasenia
     };
-    this.http.post<ClienteResponse>('http://localhost:3000/api/cliente', clienteData).subscribe(
+    const dni = Number.parseInt(this.dni)
+    this.http.get<ClienteResponse>(`http://localhost:3000/api/cliente/${dni}`).subscribe(
       (response: ClienteResponse) => {
-          this.openVentana(response.message); // Envía solo el mensaje
-          this.dialogRef.close(); // Cierra el diálogo después de crear el cliente
+        // Verificar si el email y la contraseña coinciden
+        if (response.data.email === this.email.value && response.data.contraseña === this.contrasenia) {
+          sessionStorage.setItem('dniCliente', this.dni);
+          this.dialogRef.close(); // Cierra el diálogo después de la verificación exitosa
+          this.router.navigate(['/home-cliente']);
+      } else {
+          // Mostrar un mensaje de error si el email o la contraseña no coinciden
+          this.openVentana('El email o la contraseña no coinciden.');
+      }
       },
       error => {
           this.openVentana(error.error.message);
@@ -139,3 +148,4 @@ export class RegistroComponentDialog {
 );
   }
 }
+

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { HomeComponent } from './home/home.component.js';
+import { HomeClienteComponent } from './homecliente/homecliente.component.js';
 
 @Component({
   selector: 'app-root',
@@ -8,6 +9,9 @@ import { HomeComponent } from './home/home.component.js';
   imports: [
     RouterOutlet,
     HomeComponent,
+    RouterLink,
+    RouterLinkActive,
+    HomeClienteComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'

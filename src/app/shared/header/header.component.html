@@ -1,12 +1,14 @@
 <mat-toolbar>
-  <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+  <button routerLink="/" mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
     <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="home"></mat-icon>
   </button>
   <span class="example-spacer"></span>
-  <button mat-button>
-    <b>Ingresar</b>
-  </button>
-  <app-registro></app-registro>
-  
+  @if (!isClienteLoggedIn()) {  <!-- Nota el uso de los paréntesis -->
+    <app-ingresar-button></app-ingresar-button>
+    <app-registro></app-registro>
+  }@else{
+    <button class="botones-header"  routerLink="/home-cliente" mat-button>Tu perfil </button>
+    <button class="botones-header" (click)="logout()" routerLink="/" mat-button>Salir</button>
+  }
 </mat-toolbar>
 

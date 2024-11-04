@@ -18,3 +18,8 @@
 .mat-mdc-button {
   font-size: 1.7vw;
 }
+
+.mat-mdc-button:not(:disabled){
+  color: #ffabf3;
+  font-size: 1.7vw;
+}

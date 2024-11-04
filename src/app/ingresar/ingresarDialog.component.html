@@ -1,5 +1,5 @@
 
-  <div class="titulo-reg"><h2 mat-dialog-title>Registrase</h2></div>
+  <div class="titulo-reg"><h2 mat-dialog-title>Ingresar</h2></div>
   <mat-dialog-content class="registro">
     <mat-form-field hintLabel="Max 8 números">
       <mat-label>DNI</mat-label>
@@ -7,11 +7,7 @@
       <mat-hint align="end">{{value().length}}/8</mat-hint>
     </mat-form-field>
     <mat-form-field>
-      <mat-label>Nombre completo</mat-label>
-      <input id="nombreCompleto"  [(ngModel)]="nombreCompleto" matInput>
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>Enter your email</mat-label>
+      <mat-label>Email</mat-label>
       <input
         id="email"
         matInput
@@ -25,10 +21,6 @@
       }
     </mat-form-field>
     <mat-form-field>
-      <mat-label>Telefono</mat-label>
-      <input id="telefono" [(ngModel)]="telefono" matInput #input  type="number" class="example-right-align" />
-    </mat-form-field>
-    <mat-form-field hintLabel="Mín 7 caracteres">
       <mat-label>contraseña</mat-label>
       <input id="contrasenia" [(ngModel)]="contrasenia" matInput [type]="hide() ? 'password' : 'text'" />
       <button
