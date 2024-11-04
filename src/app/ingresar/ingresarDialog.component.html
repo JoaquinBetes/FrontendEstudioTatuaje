@@ -1,6 +1,11 @@
 
   <div class="titulo-reg"><h2 mat-dialog-title>Ingresar</h2></div>
   <mat-dialog-content class="registro">
+    <p>
+      <mat-slide-toggle [(ngModel)]="tatuador" (change)="onToggleChange($event)">
+      {{ tatuador ? 'Tatuador' : 'Cliente' }}
+      </mat-slide-toggle>
+    </p>
     <mat-form-field hintLabel="Max 8 números">
       <mat-label>DNI</mat-label>
       <input id="dni" matInput #input maxlength="8" (input)="onInputDni($event)" type="number" [(ngModel)]="dni" class="example-right-align"/>

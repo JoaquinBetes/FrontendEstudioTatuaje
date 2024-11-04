@@ -1,0 +1,24 @@
+<div class="card-container">
+  <mat-card class="example-card" appearance="outlined">
+    <mat-card-header class="card-header">
+      <!-- Nombre Completo del Cliente como Título de la Tarjeta -->
+      <mat-card-title class="card-title">{{ nombreCompleto || 'Cliente sin Nombre' }}</mat-card-title>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <!-- Datos principales del cliente -->
+      <p>DNI: {{ dni || 'No disponible' }}</p>
+      <p>Email: {{ email || 'No disponible' }}</p>
+      <p>Teléfono: {{ telefono || 'No disponible' }}</p>
+      @if (!esTatuador){<p>Estado: {{ estado || 'No disponible' }}</p>}
+      @else {<p>Redes: {{ redesSociales || 'No disponible' }}</p>}
+    </mat-card-content>
+    
+    <mat-card-footer class="example-card-footer">
+      <!-- Chips para mostrar atributos o estado del cliente -->
+      <mat-chip-set aria-label="Estado del cliente">
+        <mat-chip >Activo</mat-chip>
+      </mat-chip-set>
+    </mat-card-footer>
+  </mat-card>
+</div>

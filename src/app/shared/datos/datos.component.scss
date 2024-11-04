@@ -1,0 +1,25 @@
+.card-container {
+  display: flex;
+  justify-content: center; /* Centrar horizontalmente */
+  margin-top: 20px;
+  height: 80vh;           /* Ocupa toda la altura de la pantalla */
+}
+
+.card-header {
+  display: flex;
+  justify-content: center; /* Centrar horizontalmente */
+}
+.card-title {
+  font-size: 30px;
+}
+
+.example-card {
+  display: flex;
+  justify-content:  space-between;
+  font-size: 1.4vw;
+  width: 500px; 
+  max-height: 50vh;            /* Ancho de la tarjeta */
+  max-width: 90vw;          /* Asegura que no exceda el ancho de la pantalla */
+  padding: 16px;
+  color: white;
+}

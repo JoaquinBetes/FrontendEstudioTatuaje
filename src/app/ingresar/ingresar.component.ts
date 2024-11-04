@@ -7,6 +7,11 @@ import {MatSelectModule} from '@angular/material/select';
 import {HttpClient} from '@angular/common/http';
 import {ventanaDialog} from '../shared/ventana/ventana.component.js';
 import {
+  MatSlideToggleChange,
+  MatSlideToggleModule,
+  _MatSlideToggleRequiredValidatorModule,
+} from '@angular/material/slide-toggle';
+import {
   MatDialog,
   MatDialogActions,
   MatDialogClose,
@@ -18,19 +23,8 @@ import {merge}  from 'rxjs';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {FormControl, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import { Router } from '@angular/router';
+import { ClienteResponse } from '../shared/interfaces.js';
 
-interface ClienteResponse {
-  message: string;
-  data: {
-    contraseña: string;
-    dni: number;
-    email: string;
-    estado: number;
-    nombreCompleto: string;
-    telefono: number;
-    turnos: any[];
-  };
-}
 
 @Component({
   selector: 'app-ingresar-button',
@@ -68,6 +62,7 @@ export class IngresarComponent {
     MatDialogClose,
     MatDialogContent,
     MatDialogTitle,
+    MatSlideToggleModule,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './ingresarDialog.component.html',
@@ -79,11 +74,15 @@ export class IngresarComponentDialog {
 
   http = inject(HttpClient)
 
+  tatuador = false;
+  
+
   hide = signal(true);
   dni = '';
   nombreCompleto = '';
   telefono = '';
   contrasenia = '';
+
 
   clickEvent(event: MouseEvent) {
     this.hide.set(!this.hide());
@@ -119,6 +118,9 @@ export class IngresarComponentDialog {
     console.log(e)
     this.dialog.open(ventanaDialog,{data: e});
   }
+  onToggleChange(event: MatSlideToggleChange) {
+    this.tatuador = event.checked;
+  }
 
   register() {
     const clienteData = {
@@ -130,22 +132,45 @@ export class IngresarComponentDialog {
       contraseña: this.contrasenia
     };
     const dni = Number.parseInt(this.dni)
-    this.http.get<ClienteResponse>(`http://localhost:3000/api/cliente/${dni}`).subscribe(
-      (response: ClienteResponse) => {
-        // Verificar si el email y la contraseña coinciden
-        if (response.data.email === this.email.value && response.data.contraseña === this.contrasenia) {
-          sessionStorage.setItem('dniCliente', this.dni);
-          this.dialogRef.close(); // Cierra el diálogo después de la verificación exitosa
-          this.router.navigate(['/home-cliente']);
-      } else {
-          // Mostrar un mensaje de error si el email o la contraseña no coinciden
-          this.openVentana('El email o la contraseña no coinciden.');
-      }
-      },
-      error => {
-          this.openVentana(error.error.message);
-      }
-);
+    if (!this.tatuador){
+      this.http.get<ClienteResponse>(`http://localhost:3000/api/cliente/${dni}`).subscribe(
+        (response: ClienteResponse) => {
+          // Verificar si el email y la contraseña coinciden
+          if (response.data.email === this.email.value && response.data.contraseña === this.contrasenia) {
+            sessionStorage.setItem('tatuador', JSON.stringify(this.tatuador));
+            sessionStorage.setItem('dniUsuario', this.dni);
+            this.dialogRef.close(); // Cierra el diálogo después de la verificación exitosa
+            this.router.navigate(['/home-cliente']);
+        } else {
+            // Mostrar un mensaje de error si el email o la contraseña no coinciden
+            this.openVentana('El email o la contraseña no coinciden.');
+        }
+        },
+        error => {
+            this.openVentana(error.error.message);
+        }
+      );
+    }
+    else{
+      this.http.get<ClienteResponse>(`http://localhost:3000/api/tatuador/${dni}`).subscribe(
+        (response: ClienteResponse) => {
+          // Verificar si el email y la contraseña coinciden
+          if (response.data.email === this.email.value && response.data.contraseña === this.contrasenia) {
+            sessionStorage.setItem('tatuador', JSON.stringify(this.tatuador));
+            sessionStorage.setItem('dniUsuario', this.dni);
+            this.dialogRef.close(); // Cierra el diálogo después de la verificación exitosa
+            this.router.navigate(['/home-tatuador']);
+        } else {
+            // Mostrar un mensaje de error si el email o la contraseña no coinciden
+            this.openVentana('El email o la contraseña no coinciden.');
+        }
+        },
+        error => {
+            this.openVentana(error.error.message);
+        }
+      );
+    }
+
   }
 }
 
