@@ -2,23 +2,52 @@
   <mat-card class="example-card" appearance="outlined">
     <mat-card-header class="card-header">
       <!-- Nombre Completo del Cliente como Título de la Tarjeta -->
-      <mat-card-title class="card-title">{{ nombreCompleto || 'Cliente sin Nombre' }}</mat-card-title>
+      <mat-form-field class="example-full-width">
+        <mat-label>nombreCompleto</mat-label>
+        <input matInput  [(ngModel)]="nombreCompleto" [disabled]="!puedeEditar" value="{{ nombreCompleto || 'No disponible' }}">
+      </mat-form-field>
     </mat-card-header>
-    
-    <mat-card-content>
+
+    <mat-card-content class="card-content">
       <!-- Datos principales del cliente -->
-      <p>DNI: {{ dni || 'No disponible' }}</p>
-      <p>Email: {{ email || 'No disponible' }}</p>
-      <p>Teléfono: {{ telefono || 'No disponible' }}</p>
-      @if (!esTatuador){<p>Estado: {{ estado || 'No disponible' }}</p>}
-      @else {<p>Redes: {{ redesSociales || 'No disponible' }}</p>}
+      <mat-form-field class="example-full-width">
+        <mat-label>DNI</mat-label>
+        <input matInput [(ngModel)]="dni" [disabled]="!esEncargado" value="{{ dni || 'No disponible' }}">
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>Email</mat-label>
+        <input matInput  [(ngModel)]="email" [disabled]="!puedeEditar" value="{{ email || 'No disponible' }}">
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>Telefono</mat-label>
+        <input matInput [(ngModel)]="telefono" [disabled]="!puedeEditar" value="{{ telefono || 'No disponible' }}">
+      </mat-form-field>
+      @if (!puedeEditar){
+        <mat-form-field class="example-full-width">
+          <mat-label>Estado</mat-label>
+          <input matInput [disabled]="!puedeEditar" value="{{ estado || 'No disponible' }}">
+        </mat-form-field>
+      }
+      @else {
+        <mat-form-field class="example-full-width">
+          <mat-label>Redes</mat-label>
+          <input matInput [(ngModel)]="redesSociales" [disabled]="!puedeEditar" value="{{ redesSociales || 'No disponible' }}">
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+          <mat-label>Contraseña</mat-label>
+          <input matInput [(ngModel)]="contrasenia" [disabled]="!puedeEditar" value="{{ contrasenia || 'No disponible' }}">
+        </mat-form-field>
+      }
     </mat-card-content>
-    
+
     <mat-card-footer class="example-card-footer">
       <!-- Chips para mostrar atributos o estado del cliente -->
       <mat-chip-set aria-label="Estado del cliente">
         <mat-chip >Activo</mat-chip>
       </mat-chip-set>
+      <div class="example-button-row">
+        <button mat-flat-button (click)="actualizarDatos()" [disabled]="!puedeEditar">Editar</button>
+      </div>
     </mat-card-footer>
   </mat-card>
 </div>

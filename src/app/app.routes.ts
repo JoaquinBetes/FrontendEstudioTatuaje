@@ -1,8 +1,11 @@
 import { Routes } from '@angular/router';
-import { DatosClienteComponent } from './datoscliente/datoscliente.component.js';
-import { HomeComponent } from './home/home.component.js';
-import { HomeClienteComponent } from './homecliente/homecliente.component.js';
-import { HomeTatuadorComponent } from './hometatuador/hometatuador.component.js';
+import { DatosClienteComponent } from './datosusuario/datoscliente.component';
+import { HomeComponent } from './home/home.component';
+import { HomeClienteComponent } from './homecliente/homecliente.component';
+import { HomeTatuadorComponent } from './hometatuador/hometatuador.component';
+import { HomeEncargadoEstudioComponent } from './homeencargadoestudio/homeencargadoestudio.component';
+import { EncargadoTatuadoresComponent } from './encargadotatuadores/encargadotatuadores.component';
+
 
 export const routes: Routes = [
     {
@@ -18,10 +21,22 @@ export const routes: Routes = [
       { 
         path: 'home-tatuador',
         title: 'Tatuador Home',
-         component: HomeTatuadorComponent },
+        component: HomeTatuadorComponent 
+      },
       { 
-        path: 'datos-cliente',
-        title: 'Datos Cliente',
-        component: DatosClienteComponent },
+        path: 'home-encargado',
+        title: 'Encargado Home',
+        component: HomeEncargadoEstudioComponent
+      },
+      { 
+        path: 'datos-usuario',
+        title: 'Datos',
+        component: DatosClienteComponent 
+      },
+      { 
+        path: 'encargado-tatuadores',
+        title: 'Tatuadores',
+        component: EncargadoTatuadoresComponent 
+      },
 
 ];

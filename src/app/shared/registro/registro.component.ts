@@ -115,7 +115,6 @@ export class RegistroComponentDialog {
   }
 
   openVentana(e:any) {
-    console.log(e)
     this.dialog.open(ventanaDialog,{data: e});
   }
 

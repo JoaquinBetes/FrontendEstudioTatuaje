@@ -16,7 +16,10 @@ export class OptionsSectionComponent {
 
   onOptionClick(option: string) {
     if (option === 'Mis datos') {
-      this.router.navigate(['/datos-cliente']);
+      this.router.navigate(['/datos-usuario']);
+    }
+    if (option === 'Tatuadores') {
+      this.router.navigate(['/encargado-tatuadores']);
     }
   }
 }

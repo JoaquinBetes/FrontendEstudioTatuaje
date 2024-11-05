@@ -137,7 +137,9 @@ export class IngresarComponentDialog {
         (response: ClienteResponse) => {
           // Verificar si el email y la contraseña coinciden
           if (response.data.email === this.email.value && response.data.contraseña === this.contrasenia) {
+            sessionStorage.removeItem('encargado');
             sessionStorage.setItem('tatuador', JSON.stringify(this.tatuador));
+            sessionStorage.setItem('log-in', 'true');
             sessionStorage.setItem('dniUsuario', this.dni);
             this.dialogRef.close(); // Cierra el diálogo después de la verificación exitosa
             this.router.navigate(['/home-cliente']);
@@ -156,6 +158,8 @@ export class IngresarComponentDialog {
         (response: ClienteResponse) => {
           // Verificar si el email y la contraseña coinciden
           if (response.data.email === this.email.value && response.data.contraseña === this.contrasenia) {
+            sessionStorage.removeItem('encargado');
+            sessionStorage.setItem('log-in', 'true');
             sessionStorage.setItem('tatuador', JSON.stringify(this.tatuador));
             sessionStorage.setItem('dniUsuario', this.dni);
             this.dialogRef.close(); // Cierra el diálogo después de la verificación exitosa

@@ -29,11 +29,12 @@ export class HeaderTattoo {
 
   // Método que verifica si hay un DNI guardado en sessionStorage
   isClienteLoggedIn(): boolean {
-    return sessionStorage.getItem('dniUsuario') !== null;
+    return sessionStorage.getItem('log-in') !== null;
   }
     // Método para salir
   logout(): void {
-    sessionStorage.removeItem('dniUsuario'); // Borra el DNI del sessionStorage
+    sessionStorage.removeItem('dniUsuario'); 
+    sessionStorage.removeItem('log-in'); 
     this.router.navigate(['/']);
   }
 }
