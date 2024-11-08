@@ -1,20 +1,22 @@
 <mat-grid-list cols="3"  gutterSize="3vw" rowHeight="8:11">
+  @for ( disenio of listOptions; track disenio.id){
     <mat-grid-tile>
-      <app-tattoo-card></app-tattoo-card>
+      <mat-card class="full-card" appearance="outlined">
+        <mat-card-header class="header-card">
+          <div mat-card-avatar class="example-header-image"></div>
+          <mat-card-title>{{disenio.tatuador.nombreCompleto}}</mat-card-title>
+          <mat-card-subtitle>Tatuador</mat-card-subtitle>
+        </mat-card-header>
+        <img mat-card-image class="imagen-disenio" [src]="disenio.imagen" alt="Imagen de diseño" />
+        <mat-card-content class="info">
+          <p><b>Tamaño: </b> {{disenio.tamanioAproximado}} CM cuadrados</p>
+          <p><b>Categoría: </b> {{disenio.categoria.descripcion}}</p>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-button>LIKE</button>
+          <button mat-button>SHARE</button>
+        </mat-card-actions>
+      </mat-card>
     </mat-grid-tile>
-    <mat-grid-tile>
-      <app-tattoo-card></app-tattoo-card>
-    </mat-grid-tile>
-    <mat-grid-tile>
-      <app-tattoo-card></app-tattoo-card>
-    </mat-grid-tile>
-    <mat-grid-tile>
-      <app-tattoo-card></app-tattoo-card>
-    </mat-grid-tile>
-    <mat-grid-tile>
-      <app-tattoo-card></app-tattoo-card>
-    </mat-grid-tile>
-    <mat-grid-tile>
-      <app-tattoo-card></app-tattoo-card>
-    </mat-grid-tile>
-  </mat-grid-list>
+  }
+</mat-grid-list>

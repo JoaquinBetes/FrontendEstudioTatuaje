@@ -1,0 +1,54 @@
+<header-tattoo></header-tattoo>
+<div class="card-container">
+    <mat-card class="example-card" appearance="outlined">
+      <mat-card-header class="card-header">
+        <mat-card-title>Sucursal</mat-card-title>
+      </mat-card-header>
+      <mat-card-content class="card-content">
+        @for ( element of listOptions; track element ) {
+            <mat-form-field class="example-full-width">
+                <mat-label>{{element.nombreDato}}</mat-label>
+                <input matInput [(ngModel)]="datosSucursal[element.nombreDato]"  value="{{element.dato}}">
+            </mat-form-field>
+        }
+
+
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+          <!-- Position Column -->
+          <ng-container matColumnDef="Dia">
+            <th mat-header-cell *matHeaderCellDef> Dia </th>
+            <td mat-cell *matCellDef="let element"> {{element.diaSeamana}} </td>
+          </ng-container>
+          <!-- Name Column -->
+          <ng-container matColumnDef="Inicio">
+            <th mat-header-cell *matHeaderCellDef> Inicio </th>
+            <td mat-cell *matCellDef="let element">
+              <input matInput type="time" [(ngModel)]="element.horaApertura" type="number"> <!-- Campo editable -->
+
+            </td>
+          </ng-container>
+          <!-- Weight Column -->
+          <ng-container matColumnDef="Fin">
+            <th mat-header-cell *matHeaderCellDef> Fin </th>
+            <td mat-cell *matCellDef="let element">
+              <input  matInput type="time" [(ngModel)]="element.horaCierre" type="number"> <!-- Campo editable -->
+            </td>
+          </ng-container>   
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+
+      </mat-card-content>
+
+      <mat-card-footer class="example-card-footer">
+        <!-- Chips para mostrar atributos o estado del cliente -->
+        <div class="example-button-row">
+          <button mat-flat-button (click)="cancelar()" >Cancelar</button>
+        </div>
+        <div class="example-button-row">
+          <button mat-flat-button (click)="guardarEdicion()"  >Editar</button>
+        </div>
+      </mat-card-footer>
+    </mat-card>
+  </div>

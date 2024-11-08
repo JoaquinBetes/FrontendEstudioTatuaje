@@ -13,5 +13,8 @@ import { TattooSection } from '../shared/tattooSection/tattooSection.component.j
   styleUrl: './home.component.scss'
 })
 export class HomeComponent {
-
+  ngOnInit(): void {
+    // Elimina el valor de 'encargado' del sessionStorage cuando se carga el componente
+    sessionStorage.removeItem('encargado');
+  }
 }

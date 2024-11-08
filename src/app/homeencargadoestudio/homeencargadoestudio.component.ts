@@ -15,4 +15,7 @@ import { OptionsSectionComponent } from '../shared/optionsSection/optionsSection
 })
 export class HomeEncargadoEstudioComponent {
   listOptions = ["Tatuadores", "Sucursal", "Políticas", "Liquidaciones de Sueldo", "Informes"];
+  ngOnInit(): void {
+    sessionStorage.setItem('encargado', 'true');
+  }
 }

@@ -31,10 +31,14 @@ export class HeaderTattoo {
   isClienteLoggedIn(): boolean {
     return sessionStorage.getItem('log-in') !== null;
   }
+  isTatuador(): boolean {
+    return sessionStorage.getItem('tatuador') === 'true';
+  }
     // Método para salir
   logout(): void {
     sessionStorage.removeItem('dniUsuario'); 
-    sessionStorage.removeItem('log-in'); 
+    sessionStorage.removeItem('log-in');
+    sessionStorage.removeItem('tatuador'); 
     this.router.navigate(['/']);
   }
 }

@@ -21,5 +21,11 @@ export class OptionsSectionComponent {
     if (option === 'Tatuadores') {
       this.router.navigate(['/encargado-tatuadores']);
     }
+    if (option === 'Sucursal') {
+      this.router.navigate(['/encargado-sucursal']);
+    }
+    if (option === "Mis Diseños") {
+      this.router.navigate(['/tatuador-disenios']);
+    }
   }
 }

@@ -5,7 +5,8 @@ import { HomeClienteComponent } from './homecliente/homecliente.component';
 import { HomeTatuadorComponent } from './hometatuador/hometatuador.component';
 import { HomeEncargadoEstudioComponent } from './homeencargadoestudio/homeencargadoestudio.component';
 import { EncargadoTatuadoresComponent } from './encargadotatuadores/encargadotatuadores.component';
-
+import { SucursalComponent } from './sucursal/sucursal.component.js';
+import { TatuadorDiseniosComponent } from './tatuadordisenios/tatuadordisenios.component.js';
 
 export const routes: Routes = [
     {
@@ -38,5 +39,14 @@ export const routes: Routes = [
         title: 'Tatuadores',
         component: EncargadoTatuadoresComponent 
       },
-
+      { 
+        path: 'encargado-sucursal',
+        title: 'Sucursal',
+        component: SucursalComponent 
+      },
+      { 
+        path: 'tatuador-disenios',
+        title: 'Diseños',
+        component: TatuadorDiseniosComponent
+      },
 ];

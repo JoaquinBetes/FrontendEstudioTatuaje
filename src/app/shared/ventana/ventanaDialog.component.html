@@ -5,6 +5,11 @@
     <button mat-button mat-dialog-close>Cerrar</button>
   }
   @else {
-    <button mat-button (click)="closeDialog()">Cerrar</button>
+    @if(esSucursal) {
+      <button mat-button (click)="closeSucursal()">Cerrar</button>
+    }
+    @else {
+      <button mat-button (click)="closeDialog()">Cerrar</button>
+    }
   }
 </mat-dialog-actions>

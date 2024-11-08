@@ -3,7 +3,7 @@
     <mat-card-header class="card-header">
       <!-- Nombre Completo del Cliente como Título de la Tarjeta -->
       <mat-form-field class="example-full-width">
-        <mat-label>nombreCompleto</mat-label>
+        <mat-label>nombre Completo</mat-label>
         <input matInput  [(ngModel)]="nombreCompleto" [disabled]="!puedeEditar" value="{{ nombreCompleto || 'No disponible' }}">
       </mat-form-field>
     </mat-card-header>
@@ -42,9 +42,9 @@
 
     <mat-card-footer class="example-card-footer">
       <!-- Chips para mostrar atributos o estado del cliente -->
-      <mat-chip-set aria-label="Estado del cliente">
-        <mat-chip >Activo</mat-chip>
-      </mat-chip-set>
+      <div class="example-button-row">
+        <button mat-flat-button (click)="cancelar()" [disabled]="!esEncargado">Cancelar</button>
+      </div>
       <div class="example-button-row">
         <button mat-flat-button (click)="actualizarDatos()" [disabled]="!puedeEditar">Editar</button>
       </div>

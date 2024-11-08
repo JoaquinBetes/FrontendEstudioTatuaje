@@ -17,19 +17,7 @@ import {
 import {merge}  from 'rxjs';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {FormControl, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
-
-interface ClienteResponse {
-  message: string;
-  data: {
-    contraseña: string;
-    dni: number;
-    email: string;
-    estado: number;
-    nombreCompleto: string;
-    telefono: number;
-    turnos: any[];
-  };
-}
+import { TatuadorResponse, ClienteResponse } from '../interfaces.js';
 
 @Component({
   selector: 'app-registro',
@@ -83,6 +71,7 @@ export class RegistroComponentDialog {
   nombreCompleto = '';
   telefono = '';
   contrasenia = '';
+  redesSociales = '';
 
   clickEvent(event: MouseEvent) {
     this.hide.set(!this.hide());
@@ -117,7 +106,7 @@ export class RegistroComponentDialog {
   openVentana(e:any) {
     this.dialog.open(ventanaDialog,{data: e});
   }
-
+  esEncargado = (sessionStorage.getItem('encargado') == 'true') ? true : false;
   register() {
     const clienteData = {
       dni: this.dni,
@@ -127,14 +116,34 @@ export class RegistroComponentDialog {
       estado:0,
       contraseña: this.contrasenia
     };
-    this.http.post<ClienteResponse>('http://localhost:3000/api/cliente', clienteData).subscribe(
-      (response: ClienteResponse) => {
-          this.openVentana(response.message); // Envía solo el mensaje
-          this.dialogRef.close(); // Cierra el diálogo después de crear el cliente
-      },
-      error => {
-          this.openVentana(error.error.message);
-      }
-);
+    const tatuadorData = {
+      dni: this.dni,
+      nombreCompleto: this.nombreCompleto,
+      email: this.email.value,
+      telefono: this.telefono,
+      redesSociales:this.redesSociales,
+      contraseña: this.contrasenia
+    };
+    if(!this.esEncargado){
+      this.http.post<ClienteResponse>('http://localhost:3000/api/cliente', clienteData).subscribe(
+        (response: ClienteResponse) => {
+            this.openVentana(response.message); // Envía solo el mensaje
+            this.dialogRef.close(); // Cierra el diálogo después de crear el cliente
+        },
+        error => {
+            this.openVentana(error.error.message);
+        }
+      );
+    }else{
+      this.http.post<TatuadorResponse>('http://localhost:3000/api/tatuador', tatuadorData).subscribe(
+        (response: TatuadorResponse) => {
+            this.openVentana(response.message); // Envía solo el mensaje
+            this.dialogRef.close(); // Cierra el diálogo después de crear el tatuador
+        },
+        error => {
+            this.openVentana(error.error.message);
+        }
+      );
+    }
   }
 }

@@ -2,3 +2,38 @@
 mat-grid-list {
     margin: 3vw;
 }
+
+.full-card {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: white;
+    background-color:#555555
+  }
+.full-card:hover{
+  background-color:#4e444b;
+  cursor: pointer;
+  }
+
+.header-card{
+  width: 100%;
+}
+  
+.example-header-image {
+    background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+    background-size: cover;
+  }
+
+.imagen-disenio{
+  min-height: 65vh;
+  max-height: 65vh;
+  width: 100%;
+  object-fit: contain; 
+}
+
+.info{
+  margin-top:10px;
+  
+}

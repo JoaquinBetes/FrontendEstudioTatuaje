@@ -1,0 +1,38 @@
+
+  <div class="titulo-reg"><h2 mat-dialog-title>Añadir Diseño</h2></div>
+  <mat-dialog-content class="registro">
+    <mat-form-field>
+      <mat-label>Categoria:</mat-label>
+      <input id="categoria" matInput  type="text" [(ngModel)]="categoria" class="example-right-align"/>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Tamaño Aprox. (CMxCM)</mat-label>
+      <input id="tamanio" type="number"  [(ngModel)]="tamanio" matInput>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Colores:</mat-label>
+      <input id="colores" [(ngModel)]="colores" matInput/>
+    </mat-form-field>
+      <mat-label>Cargar Imagen:</mat-label>
+      <input id="imagen" type="file" accept=".jpg, .jpeg, .png" (change)="onFileSelected($event)" >
+    <mat-form-field>
+        <mat-label>Precio Base:</mat-label>
+        <input id="precioBase" type="number"  [(ngModel)]="precioBase" matInput>
+    </mat-form-field>
+    <mat-form-field>
+    <mat-label>Descuento:</mat-label>
+        <input id="descuento" type="number"  [(ngModel)]="descuento" matInput>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Precio Final:</mat-label>
+        <input id="precioFinal" type="number"  [(ngModel)]="precioFinal" matInput>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Estado</mat-label>
+        <input id="estado" [(ngModel)]="estado" matInput #input class="example-right-align" />
+    </mat-form-field>
+  </mat-dialog-content>
+  <mat-dialog-actions class="boton-reg-cont">
+    <button class="boton-reg" mat-button mat-dialog-close>Cancelar</button>
+    <button class="boton-reg" mat-button (click)="guardarDisenio()"  cdkFocusInitial>Confirmar</button>
+  </mat-dialog-actions>

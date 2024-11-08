@@ -27,11 +27,17 @@ export class ventanaDialog {
   private router = inject(Router); // Inyecta el Router aquí
 
   esEncargado = (sessionStorage.getItem('encargado') == 'true') ? true : false;
+  esSucursal = (sessionStorage.getItem('sucursal') == 'true') ? true : false;
 
   closeDialog() {
     // Aquí rediriges al cerrar el diálogo
     this.dialogRef.close();
     this.router.navigate(['/encargado-tatuadores']);
+  }
+  closeSucursal() {
+    // Aquí rediriges al cerrar el diálogo
+    this.dialogRef.close();
+    this.router.navigate(['/home-encargado']);
   }
 
   }

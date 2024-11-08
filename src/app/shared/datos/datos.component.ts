@@ -19,6 +19,7 @@ import {
   MatDialogTitle,
 } from '@angular/material/dialog';
 import {ventanaDialog} from '../ventana/ventana.component.js';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-datos',
@@ -43,6 +44,7 @@ export class DatosComponent implements OnInit, OnChanges {
   private http = inject(HttpClient);
   private fb = inject(FormBuilder);
   dialog = inject(MatDialog);
+  private router = inject(Router); // Inyecta el Router aquí
 
   @Input() dni: number = 0;
   datosForm!: FormGroup;  // FormGroup para manejar el formulario
@@ -108,6 +110,10 @@ export class DatosComponent implements OnInit, OnChanges {
     }
   }
 
+  cancelar(){
+    this.router.navigate(['/encargado-tatuadores']);
+  }
+
   openVentana(e:any) {
     this.dialog.open(ventanaDialog,{data: e});
   }
@@ -121,9 +127,7 @@ export class DatosComponent implements OnInit, OnChanges {
         redesSociales: this.redesSociales,  
         contraseña: this.contrasenia
       }
-      
-      console.log(this.dniActual)
-      console.log(data)
+
       this.http.put(`http://localhost:3000/api/tatuador/${this.dniActual}`,data).subscribe(
         (response: any) => {
           this.openVentana(response.message); // Envía solo el mensaje
