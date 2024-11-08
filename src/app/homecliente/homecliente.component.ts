@@ -13,6 +13,6 @@ import { OptionsSectionComponent } from '../shared/optionsSection/optionsSection
   styleUrl: './homecliente.component.scss'
 })
 export class HomeClienteComponent {
-  listOptions = ["Mis turnos", "Diseños", "Buscar diseños", "Mis datos"];
+  listOptions = ["Mis turnos", "Buscar diseños", "Mis datos"];
 }
 

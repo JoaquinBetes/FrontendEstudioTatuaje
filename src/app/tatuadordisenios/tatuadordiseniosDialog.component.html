@@ -1,9 +1,22 @@
 
   <div class="titulo-reg"><h2 mat-dialog-title>Añadir Diseño</h2></div>
   <mat-dialog-content class="registro">
-    <mat-form-field>
-      <mat-label>Categoria:</mat-label>
-      <input id="categoria" matInput  type="text" [(ngModel)]="categoria" class="example-right-align"/>
+    <mat-form-field class="example-full-width">
+      <mat-label>Categoria</mat-label>
+      <input #input
+             type="text"
+             class="example-right-align"
+             placeholder="Pick one"
+             matInput
+             [formControl]="myControl"
+             [matAutocomplete]="auto"
+             (input)="filter()"
+             (focus)="filter()">
+      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelected($event.option.value)" [displayWith]="displayOption">
+        @for (option of filteredOptions; track option) {
+          <mat-option [value]="option">{{option.descripcion}}</mat-option>
+        }
+      </mat-autocomplete>
     </mat-form-field>
     <mat-form-field>
       <mat-label>Tamaño Aprox. (CMxCM)</mat-label>
@@ -28,8 +41,19 @@
         <input id="precioFinal" type="number"  [(ngModel)]="precioFinal" matInput>
     </mat-form-field>
     <mat-form-field>
-        <mat-label>Estado</mat-label>
-        <input id="estado" [(ngModel)]="estado" matInput #input class="example-right-align" />
+      <mat-label>Estado</mat-label>
+      <input type="text"
+             placeholder="Seleccione un estado"
+             matInput
+             [matAutocomplete]="autoEstado"
+             (focus)="filter()">
+      <mat-autocomplete #autoEstado="matAutocomplete" (optionSelected)="onEstadoSelected($event.option.value)">
+        @for(estado of estados; track estado;) {
+          <mat-option  [value]="estado.label">
+            {{ estado.label }}
+          </mat-option>
+        }
+      </mat-autocomplete>
     </mat-form-field>
   </mat-dialog-content>
   <mat-dialog-actions class="boton-reg-cont">

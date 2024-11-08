@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, inject, ViewChild } from '@angular/core';
 import { HeaderTattoo } from '../shared/header/header.component.js';
 import { TattooSection } from '../shared/tattooSection/tattooSection.component.js';
 import {MatButtonModule} from '@angular/material/button';
@@ -7,7 +7,9 @@ import { Diseño } from '../shared/interfaces.js';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {HttpClient} from '@angular/common/http';
+import {AsyncPipe} from '@angular/common';
 import { ventanaDialog } from '../shared/ventana/ventana.component';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {
   MatDialog,
   MatDialogModule,
@@ -41,7 +43,8 @@ export class TatuadorDiseniosComponent {
   disenios: Diseño[] = [];
 
   ngOnInit(): void {
-    this.http.get<any>(`http://localhost:3000/api/disenio`).subscribe(
+    let dni = sessionStorage.getItem("dniUsuario")
+    this.http.get<any>(`http://localhost:3000/api/disenio/tatuador/${dni}`).subscribe(
       (response: any) => {
         this.disenios = response.data;
         for (let disenio of this.disenios) {
@@ -83,18 +86,31 @@ export class TatuadorDiseniosComponent {
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
-    FormsModule,                 
+    FormsModule, 
+    MatAutocompleteModule,                
     MatDialogActions,
     MatDialogClose,
     MatDialogContent,
     MatDialogTitle,
+    ReactiveFormsModule,
+    AsyncPipe,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TatuadorDiseñosDialog {
+  @ViewChild('input') input!: ElementRef<HTMLInputElement>;
+  myControl = new FormControl('');
+  options: { id: number, descripcion: string }[] = [];  // Almacena id y descripcion
+  filteredOptions: { id: number, descripcion: string }[] = [];
   readonly dialogRef = inject(MatDialogRef<TatuadorDiseñosDialog>);
   http = inject(HttpClient);
   dialog = inject(MatDialog);
+
+  estados: { label: string, value: string }[] = [
+    { label: "Disponible", value: "dis" },
+    { label: "Reservado", value: "res" },
+    { label: "Tatuado", value: "tat" }
+  ];
 
   categoria: number = 0;
   tamanio: number = 0;
@@ -105,6 +121,56 @@ export class TatuadorDiseñosDialog {
   descuento: number = 0;
   precioFinal: number = 0;
 
+  constructor() {
+    this.myControl.valueChanges.subscribe(value => {
+      if (typeof value === 'string') {
+        // Filtramos solo si el valor es string (es decir, si el usuario está escribiendo)
+        const selectedOption = this.options.find(option => option.descripcion === value);
+        this.categoria = selectedOption ? selectedOption.id : 0;
+      }
+    });
+
+    this.http.get<any>("http://localhost:3000/api/categoria").subscribe(
+      (response: any) => {
+        this.options = response.data.map((categoria: any) => ({
+          codigo: categoria.codigo,
+          descripcion: categoria.descripcion
+        }));
+        this.filteredOptions = this.options.slice();
+      },
+      (error) => {
+        this.openVentana(error.error.message);
+      }
+    );
+  }
+
+    // Método para manejar la selección de estado
+  onEstadoSelected(selectedLabel: string): void {
+    const selectedEstado = this.estados.find(estado => estado.label === selectedLabel);
+    this.estado = selectedEstado ? selectedEstado.value : '';
+    console.log("Estado asignado:", this.estado);
+  }
+
+  displayOption(option: { codigo: number; descripcion: string } | null): string {
+    return option ? option.descripcion : '';
+  }
+
+  onOptionSelected(selectedOption: { codigo: number, descripcion: string }): void {
+    // Verifica que el objeto tenga los valores correctos
+    if (selectedOption && selectedOption.codigo !== undefined) {
+      this.categoria = selectedOption.codigo;
+    } else {
+      console.error("El objeto seleccionado no contiene un 'codigo' válido:", selectedOption);
+    }
+  }
+
+  filter(): void {
+    const filterValue = this.input.nativeElement.value.toLowerCase();
+    this.filteredOptions = this.options.filter(o => 
+      o.descripcion.toLowerCase().includes(filterValue)
+    );
+  }
+
   openVentana(e: any) {
     this.dialog.open(ventanaDialog, { data: e });
   }
@@ -113,14 +179,10 @@ export class TatuadorDiseñosDialog {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
-  
-      // Verifica si el archivo es de tipo JPG, JPEG, o PNG
       if (!file.type.match('image/jpeg') && !file.type.match('image/png')) {
         alert('Solo se permiten archivos JPG, JPEG y PNG.');
         return;
       }
-  
-      // Aquí simplemente guardamos el archivo en lugar de convertirlo a base64
       this.imagen = file;
     }
   }
@@ -130,9 +192,21 @@ export class TatuadorDiseñosDialog {
       alert("Por favor ingresa un tamaño aproximado.");
       return;
     }
+    if (!this.categoria) {
+      console.log(this.categoria);
+      alert("Por favor ingresa una categoria");
+      return;
+    }
+    if (!this.precioBase) {
+      alert("Por favor ingresa un precio base");
+      return;
+    }
+    if (this.estado.length < 3) {
+      alert("Por favor ingresa un estado valido");
+      return;
+    }
 
     const formData = new FormData();
-
     formData.append("categoria_codigo", this.categoria.toString());
     formData.append("tamanio_aproximado", this.tamanio.toString());
     formData.append("tatuador_dni", sessionStorage.getItem("dniUsuario") || "");
@@ -143,7 +217,7 @@ export class TatuadorDiseñosDialog {
     formData.append("colores", this.colores);
 
     if (this.imagen) {
-      formData.append("imagen", this.imagen, this.imagen.name); // Aquí se agrega el archivo de imagen
+      formData.append("imagen", this.imagen, this.imagen.name);
     } else {
       alert("Debe seleccionar una imagen.");
       return;

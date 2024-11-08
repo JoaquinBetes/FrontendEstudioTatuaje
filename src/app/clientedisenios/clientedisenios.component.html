@@ -1,0 +1,41 @@
+<header-tattoo></header-tattoo>
+<div class="agregar">
+    <mat-form-field class="example-full-width">
+        <mat-label>Tatuador</mat-label>
+        <input #inputTat
+               type="text"
+               class="example-right-align"
+               placeholder="Pick one"
+               matInput
+               [formControl]="tatuadorControl"
+               [matAutocomplete]="autoTat"
+               (input)="filterTat()"
+               (focus)="filterTat()"
+               >
+        <mat-autocomplete #autoTat="matAutocomplete" (optionSelected)="onOptionSelectedTat($event.option.value)" [displayWith]="displayOptionTat">
+          @for (option of filteredOptionsTat; track option) {
+            <mat-option [value]="option">{{option.nombreCompleto}}</mat-option>
+          }
+        </mat-autocomplete>
+      </mat-form-field>
+    <mat-form-field class="example-full-width">
+        <mat-label>Categoria</mat-label>
+        <input #inputCat
+               type="text"
+               class="example-right-align"
+               placeholder="Pick one"
+               matInput
+               [formControl]="categoriaControl"
+               [matAutocomplete]="autoCat"
+               (input)="filterCat()"
+               (focus)="filterCat()"
+               >
+        <mat-autocomplete #autoCat="matAutocomplete" (optionSelected)="onOptionSelected($event.option.value)" [displayWith]="displayOption">
+          @for (option of filteredOptions; track option) {
+            <mat-option [value]="option">{{option.descripcion}}</mat-option>
+          }
+        </mat-autocomplete>
+      </mat-form-field>
+    <button class="boton-agregar" (click)="buscar()"  mat-flat-button>buscar</button>
+</div>
+<app-tattooSection [listOptions]="disenios"></app-tattooSection>
