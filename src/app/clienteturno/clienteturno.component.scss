@@ -1,0 +1,44 @@
+.agregar{
+    display: flex;
+    justify-content: center;
+    margin-top: 4vh;
+    width: 100vw;
+}
+.boton-agregar{
+    width: 93%;
+    height: 10vh;
+    border-radius: 10px;
+    font-size: 2vw;
+}
+
+
+.titulo-reg{
+    align-self: center;
+   }
+.mat-mdc-raised-button {
+    font-size: 1.8vw;
+    }
+.registro {
+    display: flex;
+    flex-direction: column;
+    gap: 5px; /* Espacio entre los inputs */
+    justify-content: space-between;
+    }
+.boton-reg-cont{
+    display: flex;
+    justify-content: space-between;
+}
+.boton-reg{
+    font-size: 1.6vw
+}
+
+.imagen-disenio{
+    min-height: 65vh;
+    max-height: 65vh;
+    width: 100%;
+    object-fit: contain; 
+  }
+
+  .datos-disenio{
+    font-size: 1.2vw;
+  }

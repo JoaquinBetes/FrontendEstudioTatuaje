@@ -9,8 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { HttpClient } from '@angular/common/http';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { Observable, of } from 'rxjs';
-import { startWith, map } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-clientedisenios',
@@ -27,7 +26,8 @@ import { startWith, map } from 'rxjs/operators';
     MatAutocompleteModule
   ],
   templateUrl: './clientedisenios.component.html',
-  styleUrl: './clientedisenios.component.scss'
+  styleUrl: './clientedisenios.component.scss',
+  
 })
 export class ClienteDiseniosComponent {
   readonly dialog = inject(MatDialog);
@@ -36,6 +36,7 @@ export class ClienteDiseniosComponent {
   @ViewChild('inputCat') inputCat!: ElementRef<HTMLInputElement>;
   @ViewChild('inputTat') inputTat!: ElementRef<HTMLInputElement>;
   disenios: Diseño[] = [];
+  sacarTurno: boolean = true;
   categoria: number = 0;
   tatuador: number = 0;
   options: { codigo: number, descripcion: string }[] = [];  // Almacena codigo y descripcion
@@ -131,7 +132,7 @@ export class ClienteDiseniosComponent {
   }
 
   buscar():void {
-    this.http.get<any>(`http://localhost:3000/api/disenio/cliente/${this.tatuador}/${this.categoria}`).subscribe(
+    this.http.get<any>(`http://localhost:3000/api/disenio/cliente/${this.tatuador}/${this.categoria}/dis`).subscribe(
       (response: any) => {
         this.disenios = response.data;
         for (let disenio of this.disenios) {

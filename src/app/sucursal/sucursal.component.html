@@ -17,13 +17,13 @@
           <!-- Position Column -->
           <ng-container matColumnDef="Dia">
             <th mat-header-cell *matHeaderCellDef> Dia </th>
-            <td mat-cell *matCellDef="let element"> {{element.diaSeamana}} </td>
+            <td mat-cell *matCellDef="let element"> {{element.dia_semana}} </td>
           </ng-container>
           <!-- Name Column -->
           <ng-container matColumnDef="Inicio">
             <th mat-header-cell *matHeaderCellDef> Inicio </th>
             <td mat-cell *matCellDef="let element">
-              <input matInput type="time" [(ngModel)]="element.horaApertura" type="number"> <!-- Campo editable -->
+              <input matInput type="time" [(ngModel)]="element.hora_apertura" type="time"> <!-- Campo editable -->
 
             </td>
           </ng-container>
@@ -31,7 +31,7 @@
           <ng-container matColumnDef="Fin">
             <th mat-header-cell *matHeaderCellDef> Fin </th>
             <td mat-cell *matCellDef="let element">
-              <input  matInput type="time" [(ngModel)]="element.horaCierre" type="number"> <!-- Campo editable -->
+              <input  matInput type="time" [(ngModel)]="element.hora_cierre" type="time"> <!-- Campo editable -->
             </td>
           </ng-container>   
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

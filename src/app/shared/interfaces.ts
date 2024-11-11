@@ -7,6 +7,15 @@ export interface Tatuador {
   telefono: number;
   turnos: any[];
 }
+export interface Cliente {
+  contraseña: string;
+  dni: number;
+  email: string;
+  estado: number;
+  nombreCompleto: string;
+  telefono: number;
+  turnos: any[];
+}
 
 export interface ResponseTatuadores {
   message: string;           // Mensaje que describe la respuesta
@@ -46,9 +55,9 @@ export interface ClienteResponse {
 
   export interface DatoHorariosAtencion {
     id: number;
-    diaSeamana: string;       
-    horaApertura: number;    
-    horaCierre: number;      
+    dia_semana: string;       
+    hora_apertura: number;    
+    hora_cierre: number;      
   }
 
   export interface Categoria {
@@ -74,4 +83,19 @@ export interface ClienteResponse {
     colores: string;
     estado: string;
     turno?: any;
+  }
+
+  export interface Turno {
+    hora_inicio: string;     // Hora de inicio del turno (como string, formato "HH:MM:SS")
+    hora_fin: string; 
+    fecha_turno: Date;      // Fecha del turno
+    tatuador_dni: number;    // Tatuador asociado al turno
+    cliente_dni: number;      // Cliente que reservó el turno
+    diseño_id: number;       
+    indicaciones: string;  // Indicaciones para el tatuador
+    estado: string;        // Estado del turno (por ejemplo, "ACT", "CAN", etc.)
+  }
+  export interface TurnoResponse {
+    message: string;
+    data: Turno
   }

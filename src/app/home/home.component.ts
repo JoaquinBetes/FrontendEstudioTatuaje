@@ -12,15 +12,17 @@ import {HttpClient} from '@angular/common/http';
     TattooSection,
   ],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.scss'
+  styleUrl: './home.component.scss',
 })
 export class HomeComponent {
   disenios: Diseño[] = [];
+  sacarTurno: boolean = false;
   http = inject(HttpClient)
   cdr = inject(ChangeDetectorRef); 
   ngOnInit(): void {
     // Elimina el valor de 'encargado' del sessionStorage cuando se carga el componente
     sessionStorage.removeItem('encargado');
+    sessionStorage.removeItem('sacar-turno')
     this.http.get<any>(`http://localhost:3000/api/disenio/`).subscribe(
       (response: any) => {
         this.disenios = response.data;
