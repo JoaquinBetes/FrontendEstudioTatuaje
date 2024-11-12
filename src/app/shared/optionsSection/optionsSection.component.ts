@@ -27,6 +27,9 @@ export class OptionsSectionComponent {
     if (option === "Mis Diseños") {
       this.router.navigate(['/tatuador-disenios']);
     }
+    if (option === "Mis turnos") {
+      this.router.navigate(['/mis-turnos']);
+    }
     if (option === "Buscar diseños") {
       this.router.navigate(['/cliente-disenios']);
     }

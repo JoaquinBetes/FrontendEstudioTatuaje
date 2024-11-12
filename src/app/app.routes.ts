@@ -8,6 +8,7 @@ import { EncargadoTatuadoresComponent } from './encargadotatuadores/encargadotat
 import { SucursalComponent } from './sucursal/sucursal.component.js';
 import { TatuadorDiseniosComponent } from './tatuadordisenios/tatuadordisenios.component.js';
 import { ClienteDiseniosComponent } from './clientedisenios/clientedisenios.component.js';
+import { MisTurnosComponent } from './shared/misturnos/misturnos.component.js';
 
 export const routes: Routes = [
     {
@@ -54,5 +55,10 @@ export const routes: Routes = [
         path: 'cliente-disenios',
         title: 'Diseños',
         component: ClienteDiseniosComponent
+      },
+      { 
+        path: 'mis-turnos',
+        title: 'Turnos',
+        component: MisTurnosComponent
       },
 ];

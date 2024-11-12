@@ -3,10 +3,14 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { TattooCard } from '../tattooCard/tattooCard.component.js';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
-import { Diseño } from '../interfaces.js';
+import { Diseño, Turno } from '../interfaces.js';
 import { HttpClient } from '@angular/common/http';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ClienteTurnoComponent } from '../../clienteturno/clienteturno.component';
+import { CommonModule } from '@angular/common'
+import { ventanaDialog, ventanaDialogTurno } from '../ventana/ventana.component.js';
+
+
 
 
 @Component({
@@ -18,7 +22,8 @@ import { ClienteTurnoComponent } from '../../clienteturno/clienteturno.component
     MatButtonModule,
     MatCardModule,
     MatDialogModule,
-    ClienteTurnoComponent
+    ClienteTurnoComponent,
+    CommonModule
   ],
   templateUrl: './tattooSection.component.html',
   styleUrl: './tattooSection.component.scss',
@@ -29,10 +34,12 @@ export class TattooSection {
   http = inject(HttpClient)
   cdr = inject(ChangeDetectorRef); 
   @Input() listOptions: Diseño[] = [];
+  /* @Input() listOptionsTurnos: Turno[] = []; */
   @Input() sacarTurno: boolean = false;
+  @Input() misTurnos:boolean = false;
   
   onDisenioClick(disenio: Diseño): void {
-    console.log('Diseño seleccionado:', disenio);
+
     const dialogRef = this.dialog.open(ClienteTurnoComponent,
       {
       height: '600px',
@@ -41,9 +48,22 @@ export class TattooSection {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
+      
     });
-    
+
+  }
+
+
+  onTurnoClick(disenio: Diseño): void {
+    if(this.misTurnos){
+      const turno =disenio.turno;
+      this.dialog.open(ventanaDialogTurno,
+        {
+        height: '300px',
+        width: '200px',
+        data: { turno }  // Aquí pasamos el objeto disenio
+      });
+    }
   }
 
   trackByFn(index: number, disenio: Diseño): number {

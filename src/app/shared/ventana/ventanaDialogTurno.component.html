@@ -1,0 +1,15 @@
+<h2 mat-dialog-title>Cambiar estado Turno</h2>
+<mat-dialog-content>
+    <mat-form-field>
+        <mat-label>Estado </mat-label>
+        <mat-select [(ngModel)]="selectedValue" required>
+        @for (opcion of opciones; track opcion) {
+            <mat-option [value]="opcion">{{opcion}}</mat-option>
+        }
+        </mat-select>
+    </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions class="botones">
+    <button mat-button (click)="closeDialog()">Cerrar</button>
+    <button mat-button (click)="aceptar()">Aceptar</button>
+</mat-dialog-actions>

@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, inject, Inject } from '@angular/core';
 import {MatButtonModule} from '@angular/material/button';
 import {FormControl, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
-import { Diseño } from '../shared/interfaces.js';
+import { Diseño, TurnosResponse } from '../shared/interfaces.js';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {HttpClient} from '@angular/common/http';
@@ -22,6 +22,7 @@ import {
 import {provideNativeDateAdapter} from '@angular/material/core';
 import { Turno, TurnoResponse } from '../shared/interfaces.js';
 import {MatSelectModule} from '@angular/material/select';
+import { Horarios } from '../shared/interfaces';
 
 
 
@@ -53,17 +54,55 @@ export class ClienteTurnoComponent {
   http = inject(HttpClient);
   dialog = inject(MatDialog);
   selectedValue: string = "";
-  horarios: string [] = ["16:00:00","17:00:00","18:00:00","19:00:00","20:00:00"]
+  horarios: string [] = []
   disenio: Diseño;
   horaInicio: string = ''
   horaFin: string = ''
   fechaTurno: Date = new Date();
   indicaciones: string = '';
   estado: string = '';
+  dias: Horarios[]  = [];
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: { disenio: Diseño }) {
     this.disenio = data.disenio;
   }
+  ngOnInit(): void {
+    this.http.get<any>(`http://localhost:3000/api/horariosAtencion`).subscribe(
+      (response: any) => {
+        for (let dia of response.data){
+          let diaAct: Horarios = {
+            dia: dia.dia_semana,
+            horaApertura: dia.hora_apertura,
+            horaCierre: dia.hora_cierre
+          }
+          this.dias.push(diaAct)
+        }
+      },
+      (error) => {
+        console.error('Error al cargar los datos de diseños', error);
+      }
+    );
+  }
+
+  generarHorarios(objetoHorario: Horarios) {
+    const horarios = [];
+    let horaActual = new Date(`1970-01-01T${objetoHorario.horaApertura}`);
+    const horaFinal = new Date(`1970-01-01T${objetoHorario.horaCierre}`);
+    // Si la hora de cierre es "00:00:00", interpretamos que es a medianoche del día siguiente
+    if (horaFinal.getTime() === horaActual.getTime()) {
+        horaFinal.setDate(horaFinal.getDate() + 1); // Añadir un día
+    }
+    // Generar horarios en intervalos de una hora
+    while (horaActual < horaFinal) {
+        // Formatear la hora en "HH:mm:ss"
+        const horaString = horaActual.toTimeString().slice(0, 8);
+        horarios.push(horaString);
+
+        // Avanzar una hora
+        horaActual.setHours(horaActual.getHours() + 1);
+    }
+    return horarios;
+}
 
   openVentana(e:any) {
     this.dialog.open(ventanaDialog,{data: e});
@@ -79,11 +118,39 @@ export class ClienteTurnoComponent {
     const nuevaHora = fecha.toTimeString().slice(0, 8); // Obtener la hora en formato HH:MM:SS
     return nuevaHora;
   }
+  filterTimes(mainTimes: string[], timesToRemove: string[]): string[] {
+    // Convertimos los tiempos a Date para poder hacer comparaciones de intervalos
+    const mainDates = mainTimes.map(time => new Date(`1970-01-01T${time}Z`));
+    const removeDates = timesToRemove.map(time => new Date(`1970-01-01T${time}Z`));
+    // Filtramos mainTimes, eliminando aquellos horarios que coincidan o estén en el intervalo
+    return mainTimes.filter((time, index) => {
+        const current = mainDates[index];
+        const next = mainDates[index + 1] || null;
+        return !removeDates.some(removeDate => {
+            // Si coincide exactamente
+            if (removeDate.getTime() === current.getTime()) return true;
+            // Si está en el intervalo actual - next
+            if (next && removeDate > current && removeDate < next) return true;
+            return false;
+        });
+    });
+}
 
   onDateInput(event: any): void {
     const fecha: Date = event.value
-    console.log('Fecha seleccionada:', fecha.getDay());  // Imprime la fecha seleccionada
-    // Realiza otras acciones cuando la fecha cambie
+    const fechaFormateada = fecha.toISOString().split('T')[0];
+    const horariosOcupados: string[] = []; 
+    this.http.get<any>(`http://localhost:3000/api/turno/tatuador/${this.disenio.tatuador.dni}/fecha/${fechaFormateada}`).subscribe(
+      (response: any) => {
+        for ( const horario of response.data ) {
+          horariosOcupados.push(horario.horaInicio)
+        }
+        this.horarios = this.filterTimes(this.generarHorarios(this.dias[fecha.getDay()]), horariosOcupados)
+      },
+      (error) => {
+        console.error('Error al cargar los datos de diseños', error);
+      }
+    );
   }
 
   reservarTurno(){

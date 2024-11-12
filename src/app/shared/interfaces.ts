@@ -99,3 +99,13 @@ export interface ClienteResponse {
     message: string;
     data: Turno
   }
+  export interface TurnosResponse {
+    message: string;
+    data: Turno[]
+  }
+
+  export interface Horarios {
+    dia: string;
+    horaApertura: string;
+    horaCierre: string;
+  }
