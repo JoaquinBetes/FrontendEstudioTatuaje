@@ -36,6 +36,7 @@ export class ventanaDialog {
 
   esEncargado = (sessionStorage.getItem('encargado') == 'true') ? true : false;
   esSucursal = (sessionStorage.getItem('sucursal') == 'true') ? true : false;
+  esPoliticas = (sessionStorage.getItem('politicas') == 'true') ? true : false;
 
   closeDialog() {
     // Aquí rediriges al cerrar el diálogo
@@ -67,12 +68,14 @@ export class ventanaDialogTurno {
   private dialogRef = inject(MatDialogRef<ventanaDialog>);
   turno: Turno|null = null;
   selectedValue: string = "";
-  opciones: string[]
+  opciones: string[];
+  isDisabled: boolean = false;
 
   constructor(){
     const tatuador=sessionStorage.getItem("tatuador")
     if (tatuador === 'true'){
       this.opciones = ["Confirmar", "Cancelar"]
+      this.isDisabled = tatuador && this.data?.turno?.estado === "can";
     }
     else{
       this.opciones = ["Cancelar"]
@@ -92,7 +95,10 @@ export class ventanaDialogTurno {
     if (this.selectedValue === "Cancelar"){ estado ="can" }
     this.http.put<any>(`http://localhost:3000/api/turno/${this.data.turno.id}`,{"estado": estado}).subscribe(
       (response: any) => {
-        this.openVentana('El turno fue cancelado');
+        let respuesta;
+        if (this.selectedValue === "Confirmar"){ respuesta ="confirmado" }
+        else { respuesta ="cancelado" }
+        this.openVentana(`El turno fue ${respuesta}`);
         this.dialogRef.close();
               // Llama a detectChanges() para forzar la detección de cambios
         this.cdr.detectChanges();

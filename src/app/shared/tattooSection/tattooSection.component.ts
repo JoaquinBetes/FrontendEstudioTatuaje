@@ -10,9 +10,6 @@ import { ClienteTurnoComponent } from '../../clienteturno/clienteturno.component
 import { CommonModule } from '@angular/common'
 import { ventanaDialog, ventanaDialogTurno } from '../ventana/ventana.component.js';
 
-
-
-
 @Component({
   selector: 'app-tattooSection',
   standalone: true,
@@ -37,6 +34,7 @@ export class TattooSection {
   /* @Input() listOptionsTurnos: Turno[] = []; */
   @Input() sacarTurno: boolean = false;
   @Input() misTurnos:boolean = false;
+  @Input() tatuador:boolean = false;
   
   onDisenioClick(disenio: Diseño): void {
 

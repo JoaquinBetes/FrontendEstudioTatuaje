@@ -2,7 +2,7 @@
 <mat-dialog-content>
     <mat-form-field>
         <mat-label>Estado </mat-label>
-        <mat-select [(ngModel)]="selectedValue" required>
+        <mat-select [(ngModel)]="selectedValue" [disabled]="isDisabled">
         @for (opcion of opciones; track opcion) {
             <mat-option [value]="opcion">{{opcion}}</mat-option>
         }

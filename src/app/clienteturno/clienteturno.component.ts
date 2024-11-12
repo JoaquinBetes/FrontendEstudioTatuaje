@@ -162,7 +162,7 @@ export class ClienteTurnoComponent {
       cliente_dni: Number.parseInt(sessionStorage.getItem('dniUsuario') || '0'),
       diseño_id: this.disenio.id,
       indicaciones: this.indicaciones,
-      estado: 'res'
+      estado: 'pen'
     }
     this.http.post<TurnoResponse>("http://localhost:3000/api/turno", turno).subscribe(
       (response: TurnoResponse) => {

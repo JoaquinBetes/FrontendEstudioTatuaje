@@ -83,6 +83,7 @@ export interface ClienteResponse {
     colores: string;
     estado: string;
     turno?: any;
+    cliente?: any;
   }
 
   export interface Turno {

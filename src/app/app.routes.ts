@@ -9,6 +9,7 @@ import { SucursalComponent } from './sucursal/sucursal.component.js';
 import { TatuadorDiseniosComponent } from './tatuadordisenios/tatuadordisenios.component.js';
 import { ClienteDiseniosComponent } from './clientedisenios/clientedisenios.component.js';
 import { MisTurnosComponent } from './shared/misturnos/misturnos.component.js';
+import { PoliticasComponent } from './politicas/politicas.component.js';
 
 export const routes: Routes = [
     {
@@ -60,5 +61,10 @@ export const routes: Routes = [
         path: 'mis-turnos',
         title: 'Turnos',
         component: MisTurnosComponent
+      },
+      { 
+        path: 'encargado-sucursal/politicas',
+        title: 'Politicas',
+        component: PoliticasComponent
       },
 ];

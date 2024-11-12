@@ -34,13 +34,18 @@ export class MisTurnosComponent {
   cdr = inject(ChangeDetectorRef);
   disenios: Diseño[] = [];
   turnos: Turno[] = [];
+  tatuador:boolean = false
   ngOnInit(): void {
+    this.tatuador = sessionStorage.getItem('tatuador') == "true"
     const dni = sessionStorage.getItem('dniUsuario');
-    this.http.get<any>(`http://localhost:3000/api/turno/cliente/${dni}`).subscribe(
-      (response: any) => {
+    if(this.tatuador) {
+      this.http.get<any>(`http://localhost:3000/api/turno/tatuador/${dni}`).subscribe(
+        (response: any) => {
         this.turnos = response.data
         for (let turno of response.data){
           turno.diseño.tatuador = turno.tatuador
+          turno.diseño.cliente = turno.cliente
+          console.log(turno)
           turno.diseño.turno = turno
           this.disenios.push(turno.diseño)
         }
@@ -57,5 +62,31 @@ export class MisTurnosComponent {
         console.error('Error al cargar los datos de diseños', error);
       }
     );
+  }
+  else{
+    this.http.get<any>(`http://localhost:3000/api/turno/cliente/${dni}`).subscribe(
+      (response: any) => {
+      this.turnos = response.data
+      for (let turno of response.data){
+        turno.diseño.tatuador = turno.tatuador
+        turno.diseño.cliente = turno.cliente
+        console.log(turno)
+        turno.diseño.turno = turno
+        this.disenios.push(turno.diseño)
+      }
+      for (let disenio of this.disenios) {
+        // Verifica que la URL ya esté correctamente formada
+        if (disenio.imagen && !disenio.imagen.startsWith('http://')) {
+          disenio.imagen = `http://localhost:3000${disenio.imagen}`;  // Concatenar solo el dominio base si la imagen tiene la ruta relativa
+        }
+      }
+            // Llama a detectChanges() para forzar la detección de cambios
+    this.cdr.detectChanges();
+    },  
+    (error:any) => {
+      console.error('Error al cargar los datos de diseños', error);
+    }
+  );
+  }
   }
 }

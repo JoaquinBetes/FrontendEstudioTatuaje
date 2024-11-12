@@ -33,5 +33,11 @@ export class OptionsSectionComponent {
     if (option === "Buscar diseños") {
       this.router.navigate(['/cliente-disenios']);
     }
+    if (option === "Buscar diseños") {
+      this.router.navigate(['/cliente-disenios']);
+    }
+    if (option === "Políticas") {
+      this.router.navigate(['/encargado-sucursal/politicas']);
+    }
   }
 }

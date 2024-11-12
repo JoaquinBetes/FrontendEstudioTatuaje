@@ -23,11 +23,20 @@
     @else{
       <mat-grid-tile >
         <mat-card class="full-card" appearance="outlined" (click)="onTurnoClick(disenio)">
-          <mat-card-header class="header-card">
-            <div mat-card-avatar class="example-header-image"></div>
-            <mat-card-title>{{disenio.tatuador.nombreCompleto}}</mat-card-title>
-            <mat-card-subtitle>Tatuador</mat-card-subtitle>
-          </mat-card-header>
+          @if(!tatuador){
+            <mat-card-header class="header-card">
+              <div mat-card-avatar class="example-header-image"></div>
+              <mat-card-title>{{disenio.tatuador.nombreCompleto}}</mat-card-title>
+              <mat-card-subtitle>Tatuador</mat-card-subtitle>
+            </mat-card-header>
+          }
+          @else{
+            <mat-card-header class="header-card">
+              <div mat-card-avatar class="example-header-image"></div>
+              <mat-card-title>{{disenio.cliente.nombreCompleto}}</mat-card-title>
+              <mat-card-subtitle>Cliente</mat-card-subtitle>
+            </mat-card-header>
+          }
           <img mat-card-image class="imagen-disenio" [src]="disenio.imagen" alt="Imagen de diseño" />
           @if (!misTurnos){
             <mat-card-content class="info">
