@@ -10,6 +10,7 @@ import { TatuadorDiseniosComponent } from './tatuadordisenios/tatuadordisenios.c
 import { ClienteDiseniosComponent } from './clientedisenios/clientedisenios.component.js';
 import { MisTurnosComponent } from './shared/misturnos/misturnos.component.js';
 import { PoliticasComponent } from './politicas/politicas.component.js';
+import { SueldosComponent } from './sueldos/sueldos.component.js'; 
 
 export const routes: Routes = [
     {
@@ -66,5 +67,10 @@ export const routes: Routes = [
         path: 'encargado-sucursal/politicas',
         title: 'Politicas',
         component: PoliticasComponent
+      },
+      { 
+        path: 'encargado-sucursal/sueldos',
+        title: 'Liquidaciones de sueldo',
+        component: SueldosComponent
       },
 ];

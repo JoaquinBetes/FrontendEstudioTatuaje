@@ -48,10 +48,8 @@
              [matAutocomplete]="autoEstado"
              (focus)="filter()">
       <mat-autocomplete #autoEstado="matAutocomplete" (optionSelected)="onEstadoSelected($event.option.value)">
-        @for(estado of estados; track estado;) {
-          <mat-option  [value]="estado.label">
-            {{ estado.label }}
-          </mat-option>
+        @for(estado of estados; track estado;){
+          <mat-option  [value]="estado.label">{{ estado.label }}</mat-option>
         }
       </mat-autocomplete>
     </mat-form-field>

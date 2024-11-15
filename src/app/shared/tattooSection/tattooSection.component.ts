@@ -9,6 +9,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ClienteTurnoComponent } from '../../clienteturno/clienteturno.component';
 import { CommonModule } from '@angular/common'
 import { ventanaDialog, ventanaDialogTurno } from '../ventana/ventana.component.js';
+import { ProcesotatuajeComponent } from '../../procesotatuaje/procesotatuaje.component.js';
 
 @Component({
   selector: 'app-tattooSection',
@@ -20,7 +21,8 @@ import { ventanaDialog, ventanaDialogTurno } from '../ventana/ventana.component.
     MatCardModule,
     MatDialogModule,
     ClienteTurnoComponent,
-    CommonModule
+    CommonModule,
+    
   ],
   templateUrl: './tattooSection.component.html',
   styleUrl: './tattooSection.component.scss',
@@ -35,6 +37,7 @@ export class TattooSection {
   @Input() sacarTurno: boolean = false;
   @Input() misTurnos:boolean = false;
   @Input() tatuador:boolean = false;
+  @Input() tatuadorDisenios:boolean = false;
   
   onDisenioClick(disenio: Diseño): void {
 
@@ -61,6 +64,14 @@ export class TattooSection {
         width: '200px',
         data: { turno }  // Aquí pasamos el objeto disenio
       });
+    }
+    if(this.tatuadorDisenios){
+      this.dialog.open(ProcesotatuajeComponent,
+        {
+        height: '600px',
+        width: '600px',
+        data: { disenio }
+      })
     }
   }
 

@@ -1,0 +1,30 @@
+
+  <div class="datos "><h1 mat-dialog-title>{{ tatuador.nombreCompleto }}</h1>  <h2 mat-dialog-title>{{ tatuador.dni }}</h2></div>
+  <mat-dialog-content class="registro">
+    <div class="datos">
+        <span><b>Comisión:  {{comision*100}}%</b></span>
+        <span><b>Desde:  {{primerDiaMes}}</b></span>
+        <span><b>Hasta:  {{fecha_actual}}</b></span>
+    </div>
+    <div class="datos-liquidacion">
+        <div>
+            @for( dato of datosLiquidacion ; track dato ){
+                <div class="datos">
+                    <span><u>Fecha:</u>  {{dato.fechaTatuaje}}</span>
+                    <span><u>Precio:</u>  ${{dato.precio}}</span>
+                    <span><u>Tatuador:</u>  ${{dato.gananciaTatuador}}</span>
+                    <span><u>Estudio:</u>  ${{dato.gananciaEstudio}}</span>
+                </div>
+            }
+        </div>
+        <div class="datos">
+            <span><u><b>Total:</b></u>  ${{total}}</span>
+            <span><u><b>Total Tatuador:</b></u>  ${{totalTatuador}}</span>
+            <span><u><b>Total Estudio:</b></u>  ${{totalEstudio}}</span>
+        </div>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions class="boton-reg-cont">
+    <button class="boton-reg" (click)="emitirLiquidacion()" mat-button mat-dialog-close>Emitir</button>
+    <button class="boton-reg" mat-button  cdkFocusInitial>Guardar</button>
+  </mat-dialog-actions>

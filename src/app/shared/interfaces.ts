@@ -110,3 +110,10 @@ export interface ClienteResponse {
     horaApertura: string;
     horaCierre: string;
   }
+
+  export interface DatosLiquidacion {
+    fechaTatuaje: string;
+    precio: number;
+    gananciaTatuador: number;
+    gananciaEstudio: number;
+  }

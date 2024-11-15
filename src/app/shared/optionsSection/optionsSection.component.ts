@@ -39,5 +39,8 @@ export class OptionsSectionComponent {
     if (option === "Políticas") {
       this.router.navigate(['/encargado-sucursal/politicas']);
     }
+    if (option === "Liquidaciones de Sueldo"){
+      this.router.navigate(['/encargado-sucursal/sueldos'])
+    }
   }
 }

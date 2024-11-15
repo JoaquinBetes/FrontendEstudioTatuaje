@@ -37,6 +37,7 @@ export class ventanaDialog {
   esEncargado = (sessionStorage.getItem('encargado') == 'true') ? true : false;
   esSucursal = (sessionStorage.getItem('sucursal') == 'true') ? true : false;
   esPoliticas = (sessionStorage.getItem('politicas') == 'true') ? true : false;
+  esLiquidacion = (sessionStorage.getItem('liquidacion') == 'true') ? true : false;
 
   closeDialog() {
     // Aquí rediriges al cerrar el diálogo
@@ -72,6 +73,7 @@ export class ventanaDialogTurno {
   isDisabled: boolean = false;
 
   constructor(){
+    console.log(this.turno)
     const tatuador=sessionStorage.getItem("tatuador")
     if (tatuador === 'true'){
       this.opciones = ["Confirmar", "Cancelar"]
@@ -91,22 +93,31 @@ export class ventanaDialogTurno {
 
   aceptar() {
     let estado;
-    if (this.selectedValue === "Confirmar"){ estado ="con" }
-    if (this.selectedValue === "Cancelar"){ estado ="can" }
-    this.http.put<any>(`http://localhost:3000/api/turno/${this.data.turno.id}`,{"estado": estado}).subscribe(
-      (response: any) => {
-        let respuesta;
-        if (this.selectedValue === "Confirmar"){ respuesta ="confirmado" }
-        else { respuesta ="cancelado" }
-        this.openVentana(`El turno fue ${respuesta}`);
-        this.dialogRef.close();
-              // Llama a detectChanges() para forzar la detección de cambios
-        this.cdr.detectChanges();
-      },  
-      (error:any) => {
-        console.error('Error', error);
-      }
-    );
+    if (this.selectedValue === "Confirmar"){
+       estado ="con" 
+       this.http.put<any>(`http://localhost:3000/api/turno/${this.data.turno.id}`,{"estado": estado}).subscribe(
+        (response: any) => { 
+          this.openVentana(`El turno fue confirmado`);
+          this.dialogRef.close();
+        },
+        (error:any) => {
+          console.error('Error', error);
+        });
+    }
+    if (this.selectedValue === "Cancelar"){
+      this.http.put<any>(`http://localhost:3000/api/disenio/${this.data.turno.diseño.id}`,{"estado":"dis"}).subscribe(
+        (response: any) => {
+          this.http.delete<any>(`http://localhost:3000/api/turno/${this.data.turno.id}`).subscribe(
+          (response: any) => {
+            this.openVentana(`El turno fue cancelado`);
+            this.dialogRef.close();
+          },
+          (error:any) => {
+            console.error('Error', error);
+          });
+          this.cdr.detectChanges();
+        }
+      );
+    }
   }
-
 }

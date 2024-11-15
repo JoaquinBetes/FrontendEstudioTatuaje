@@ -11,12 +11,9 @@
           <img mat-card-image class="imagen-disenio" [src]="disenio.imagen" alt="Imagen de diseño" />
           <mat-card-content class="info">
             <p><b>Tamaño: </b> {{disenio.tamanioAproximado}} CM cuadrados</p>
-            <p><b>Categoría: </b> {{disenio.categoria.descripcion}}</p>
+            <p><b>Precio base: </b> ${{disenio.precioBase}}</p>
+            <p><b>Descuento: </b> {{disenio.descuento*100}}%</p>
           </mat-card-content>
-          <mat-card-actions>
-            <button mat-button>LIKE</button>
-            <button mat-button>SHARE</button>
-          </mat-card-actions>
         </mat-card>
       </mat-grid-tile>
     }
@@ -42,6 +39,17 @@
             <mat-card-content class="info">
               <p><b>Tamaño: </b> {{disenio.tamanioAproximado}} CM cuadrados</p>
               <p><b>Categoría: </b> {{disenio.categoria.descripcion}}</p>
+              <div class="estado">
+                @if (disenio.estado === "res"){
+                  <p><b class="pendiente">Reservado</b></p>
+                }
+                @if (disenio.estado === "dis"){
+                  <p><b class="confirmado">Disponible</b></p>
+                }
+                @if (disenio.estado === "tat"){
+                  <p><b class="cancelado">Tatuado</b></p>
+                }
+              </div>
             </mat-card-content>
           }
           @else{

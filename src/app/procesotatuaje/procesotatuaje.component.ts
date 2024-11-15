@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ElementRef, inject, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, Inject, inject, ViewChild } from '@angular/core';
 import { HeaderTattoo } from '../shared/header/header.component.js';
 import { TattooSection } from '../shared/tattooSection/tattooSection.component.js';
 import {MatButtonModule} from '@angular/material/button';
@@ -18,66 +18,14 @@ import {
   MatDialogContent,
   MatDialogRef,
   MatDialogTitle,
+  MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
 import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
-  selector: 'app-tatuador-disenios',
+  selector: 'app-procesotatuaje',
   standalone: true,
-  imports: [
-    HeaderTattoo,
-    TattooSection,
-    MatButtonModule,
-    MatDialogModule,
-    FormsModule,
-    
-  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl: './tatuadordisenios.component.html',
-  styleUrl: './tatuadordisenios.component.scss'
-})
-export class TatuadorDiseniosComponent {
-  readonly dialog = inject(MatDialog);
-  http = inject(HttpClient)
-  cdr = inject(ChangeDetectorRef); 
-  disenios: Diseño[] = [];
-
-  ngOnInit(): void {
-    let dni = sessionStorage.getItem("dniUsuario")
-    this.http.get<any>(`http://localhost:3000/api/disenio/tatuador/${dni}`).subscribe(
-      (response: any) => {
-        this.disenios = response.data;
-        for (let disenio of this.disenios) {
-          // Verifica que la URL ya esté correctamente formada
-          if (disenio.imagen && !disenio.imagen.startsWith('http://')) {
-            disenio.imagen = `http://localhost:3000${disenio.imagen}`;  // Concatenar solo el dominio base si la imagen tiene la ruta relativa
-          }
-        }
-        // Llama a detectChanges() para forzar la detección de cambios
-        this.cdr.detectChanges();
-      },
-      (error) => {
-        console.error('Error al cargar los datos de diseños', error);
-      }
-    );
-  }
-  
-  
-
-  openDialog() {
-    const dialogRef = this.dialog.open(TatuadorDiseñosDialog,
-      {
-      height: '600px',
-      width: '600px',
-    });
-  }
-}
-
-@Component({
-  selector: 'tatuador-disenios-dialog',
-  templateUrl: './tatuadordiseniosDialog.component.html',
-  styleUrl: './tatuadordisenios.component.scss',
-  standalone: true,
   imports: [
     MatButtonModule,
     MatFormFieldModule,
@@ -91,23 +39,26 @@ export class TatuadorDiseniosComponent {
     ReactiveFormsModule,
     AsyncPipe,
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  templateUrl: './procesotatuaje.component.html',
+  styleUrl: './procesotatuaje.component.scss' 
 })
-export class TatuadorDiseñosDialog {
+export class ProcesotatuajeComponent {
   @ViewChild('input') input!: ElementRef<HTMLInputElement>;
   myControl = new FormControl('');
   options: { id: number, descripcion: string }[] = [];  // Almacena id y descripcion
   filteredOptions: { id: number, descripcion: string }[] = [];
-  readonly dialogRef = inject(MatDialogRef<TatuadorDiseñosDialog>);
   http = inject(HttpClient);
   dialog = inject(MatDialog);
+  cdRef = inject(ChangeDetectorRef);
 
   estados: { label: string, value: string }[] = [
     { label: "Disponible", value: "dis" },
     { label: "Reservado", value: "res" },
     { label: "Tatuado", value: "tat" }
   ];
+  estadoLabel: string = '';
 
+  categoriaOpcion: any ={};
   categoria: number = 0;
   tamanio: number = 0;
   colores: string = '';
@@ -117,7 +68,10 @@ export class TatuadorDiseñosDialog {
   descuento: number = 0;
   precioFinal: number = 0;
 
-  constructor() {
+  constructor(
+    public dialogRef: MatDialogRef<ProcesotatuajeComponent>,
+    @Inject(MAT_DIALOG_DATA) public data:any
+  ) {
     this.myControl.valueChanges.subscribe(value => {
       if (typeof value === 'string') {
         // Filtramos solo si el valor es string (es decir, si el usuario está escribiendo)
@@ -125,31 +79,54 @@ export class TatuadorDiseñosDialog {
         this.categoria = selectedOption ? selectedOption.id : 0;
       }
     });
-
     this.http.get<any>("http://localhost:3000/api/categoria").subscribe(
       (response: any) => {
         this.options = response.data.map((categoria: any) => ({
           codigo: categoria.codigo,
           descripcion: categoria.descripcion
         }));
+        this.categoriaOpcion =this.options.find((categoria: any) => categoria.codigo == data.disenio.categoria.codigo);
+        this.categoria = this.categoriaOpcion.codigo
+        // Forzamos la detección de cambios para actualizar la vista
+        this.cdRef.markForCheck();
         this.filteredOptions = this.options.slice();
       },
       (error) => {
         this.openVentana(error.error.message);
       }
     );
+    console.log(data.disenio)
+    // Asigna la data a las propiedades locales para que se use en el formulario
+    /* this.categoria = data.categoria.codigo; */
+    const disenio = data.disenio
+    this.tamanio = disenio.tamanioAproximado;
+    this.imagen = disenio.imagen
+    this.colores = disenio.colores;
+    this.precioBase = disenio.precioBase;
+    this.descuento = disenio.descuento;
+    this.precioFinal = disenio.precioFinal || 0;
+    const estadoEncontrado = this.estados.find(e => e.value === disenio.estado);
+    if (estadoEncontrado) {
+      this.estado = estadoEncontrado.value;
+      this.estadoLabel = estadoEncontrado.label;
+    }
   }
 
     // Método para manejar la selección de estado
-  onEstadoSelected(selectedLabel: string): void {
-    const selectedEstado = this.estados.find(estado => estado.label === selectedLabel);
-    this.estado = selectedEstado ? selectedEstado.value : '';
-    console.log("Estado asignado:", this.estado);
+  onEstadoSelected(selectedValue: string): void {
+    // Actualiza estado y estadoLabel cuando se selecciona una opción
+    const estadoEncontrado = this.estados.find(e => e.label === selectedValue);
+
+    if (estadoEncontrado) {
+      this.estado = estadoEncontrado.value; // Mantén el valor abreviado para el envío al backend
+      this.estadoLabel = estadoEncontrado.label; // Muestra el label completo en el campo
+    }
   }
 
   displayOption(option: { codigo: number; descripcion: string } | null): string {
     return option ? option.descripcion : '';
   }
+  
 
   onOptionSelected(selectedOption: { codigo: number, descripcion: string }): void {
     // Verifica que el objeto tenga los valores correctos
@@ -183,6 +160,50 @@ export class TatuadorDiseñosDialog {
     }
   }
 
+  clienteAusente():void {
+    const formData = new FormData();
+    this.estado = "dis"
+    formData.append("estado", this.estado);
+    this.http.put<any>(`http://localhost:3000/api/disenio/${this.data.disenio.id}`, formData) // Diseño
+      .subscribe(
+      (response: any) => {
+        this.http.get<any>(`http://localhost:3000/api/turno/${this.data.disenio.turno}`) // Busca turno
+      .subscribe(
+        (response: any) => {
+          let turno = response.data
+          let cliente = turno.cliente
+          cliente.estado++
+          this.http.put<any>(`http://localhost:3000/api/cliente/${cliente.dni}`, cliente) // Actualiza turno y cliente
+      .subscribe(
+          (response: any) => {
+            this.http.delete<any>(`http://localhost:3000/api/turno/${turno.id}`)
+            .subscribe(
+              (response: any) => {
+                this.openVentana("Se ha registrado la ausencia del cliente. Turno cancelado, diseño disponible nuevamente y cleiente amonestado ");
+                this.dialogRef.close();
+              },
+              (error) => {
+                this.openVentana(error.error.message);
+              }
+            );
+          },
+          (error) => {
+            this.openVentana(error.error.message);
+          }
+        );
+        },
+        (error) => {
+          this.openVentana(error.error.message);
+        }
+      );
+      },
+      (error) => {
+        this.openVentana(error.error.message);
+      }
+    );
+  }
+    
+
   guardarDisenio() {
     if (!this.tamanio) {
       alert("Por favor ingresa un tamaño aproximado.");
@@ -195,6 +216,10 @@ export class TatuadorDiseñosDialog {
     }
     if (!this.precioBase) {
       alert("Por favor ingresa un precio base");
+      return;
+    }
+    if (!this.precioFinal) {
+      alert("Por favor ingresa un precio final");
       return;
     }
     if (this.estado.length < 3) {
@@ -211,22 +236,21 @@ export class TatuadorDiseñosDialog {
     formData.append("precio_final", this.precioFinal.toString());
     formData.append("estado", this.estado);
     formData.append("colores", this.colores);
-
-    if (this.imagen) {
+   
+    if (this.imagen instanceof File) {
       formData.append("imagen", this.imagen, this.imagen.name);
-    } else {
-      alert("Debe seleccionar una imagen.");
-      return;
     }
-
-    this.http.post<any>("http://localhost:3000/api/disenio", formData).subscribe(
-      (response: any) => {
-        this.openVentana(response.message);
-        this.dialogRef.close();
-      },
-      (error) => {
-        this.openVentana(error.error.message);
+    
+    this.http.put<any>(`http://localhost:3000/api/disenio/${this.data.disenio.id}`, formData)
+      .subscribe(
+        (response: any) => {
+          this.openVentana(response.message);
+          this.dialogRef.close();
+        },
+        (error) => {
+          this.openVentana(error.error.message);
+        }
+      );
       }
-    );
-  }
 }
+
