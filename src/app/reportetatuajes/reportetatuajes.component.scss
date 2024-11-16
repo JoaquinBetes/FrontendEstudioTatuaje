@@ -1,0 +1,49 @@
+.card-container {
+    display: flex;
+    justify-content: center; /* Centrar horizontalmente */
+    margin-top: 20px;
+    height: 98vh;           /* Ocupa toda la altura de la pantalla */
+    
+  }
+  
+  .card-header {
+    display: flex;
+    justify-content: center; /* Centrar horizontalmente */
+    padding-bottom: 3.2vh;
+  }
+  .card-title {
+    font-size: 30px;
+  }
+  
+  .example-card {
+    display: flex;
+    justify-content:  space-between;
+    font-size: 1.7vw;
+    width: 100%; 
+    max-height: 97vh;            
+    max-width: 60vw;          
+    padding: 16px;
+    color: white;
+  }
+  
+  .card-content{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem; // Espacio entre cada input field
+    overflow-y: auto; /* Habilita el scroll vertical si el contenido supera el tamaño */
+  }
+  
+  .input-fields {
+    display: flex;
+    flex-direction: column;
+    width: 100%; // Asegura que los inputs ocupen todo el ancho del contenedor
+  }
+  
+  mat-form-field {
+    width: 100%; // Hace que cada input ocupe todo el ancho disponible
+  }
+  
+  .example-card-footer {
+    display: flex;
+    justify-content:  space-between;
+  }

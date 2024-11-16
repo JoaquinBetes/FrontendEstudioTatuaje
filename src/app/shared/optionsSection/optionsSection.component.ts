@@ -1,6 +1,8 @@
-import { Component, Input } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import {MatGridListModule} from '@angular/material/grid-list';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { ventanaDialogInforme } from '../ventana/ventana.component.js';
 
 @Component({
   selector: 'app-options-section',
@@ -11,8 +13,12 @@ import { Router } from '@angular/router';
 })
 export class OptionsSectionComponent {
   @Input() listOptions: string[] = []; // Acepta una lista de opciones
-  
+  dialog = inject(MatDialog);
   constructor(private router: Router) {}
+
+  openVentana() {
+    this.dialog.open(ventanaDialogInforme);
+  }
 
   onOptionClick(option: string) {
     if (option === 'Mis datos') {
@@ -41,6 +47,9 @@ export class OptionsSectionComponent {
     }
     if (option === "Liquidaciones de Sueldo"){
       this.router.navigate(['/encargado-sucursal/sueldos'])
+    }
+    if (option === "Informes"){
+      this.openVentana();
     }
   }
 }

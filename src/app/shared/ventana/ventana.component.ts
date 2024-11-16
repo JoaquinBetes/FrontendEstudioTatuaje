@@ -121,3 +121,29 @@ export class ventanaDialogTurno {
     }
   }
 }
+
+@Component({
+  selector: 'ventana-dialog-informe',
+  templateUrl: 'ventanaDialogInformes.html',
+  styleUrl: './ventana.component.scss',
+  standalone: true,
+  imports: [MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose, MatButtonModule,MatFormFieldModule, MatOptionModule, MatSelectModule, FormsModule],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class ventanaDialogInforme {
+  private router = inject(Router); // Inyecta el Router aquí
+  dialog = inject(MatDialog);
+  private dialogRef = inject(MatDialogRef<ventanaDialog>);
+  isDisabled: boolean = false;
+
+  reporteTatuajes():void {
+    this.dialogRef.close();
+    this.router.navigate(['/encargado-sucursal/informes-tatuadores']);
+  }
+
+  reporteIngresos():void {
+    this.dialogRef.close();
+    this.router.navigate(['/encargado-sucursal/reporte-ingresos']);
+  }
+
+}

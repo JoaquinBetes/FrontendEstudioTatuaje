@@ -96,6 +96,19 @@ export interface ClienteResponse {
     indicaciones: string;  // Indicaciones para el tatuador
     estado: string;        // Estado del turno (por ejemplo, "ACT", "CAN", etc.)
   }
+
+  export interface TurnoConDiseño {
+    hora_inicio: string;     // Hora de inicio del turno (como string, formato "HH:MM:SS")
+    hora_fin: string; 
+    fechaTurno: Date;      // Fecha del turno
+    tatuador_dni: number;    // Tatuador asociado al turno
+    cliente_dni: number;      // Cliente que reservó el turno
+    diseño: Diseño;       
+    indicaciones: string;  // Indicaciones para el tatuador
+    estado: string;   
+    tatuador?: Tatuador;     // Estado del turno (por ejemplo, "ACT", "CAN", etc.)
+  }
+
   export interface TurnoResponse {
     message: string;
     data: Turno
@@ -116,4 +129,9 @@ export interface ClienteResponse {
     precio: number;
     gananciaTatuador: number;
     gananciaEstudio: number;
+  }
+
+  export interface DatosGraficoTatuadorCant {
+    mes: string;
+    cantidad: number;
   }

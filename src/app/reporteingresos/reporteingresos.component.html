@@ -1,0 +1,20 @@
+<header-tattoo></header-tattoo>
+<div class="card-container">
+  <mat-card class="example-card" appearance="outlined">
+    <mat-card-content class="card-content">
+      <mat-card-title>{{mesActualNombre}}, {{anioActual}}</mat-card-title>
+
+      <div>
+        <p>Ingresos por comisiones</p>
+        <!-- Componente de gráficos que recibe los datos de comisiones -->
+        <app-graficos-ingresos #grafico [datosGraficoTat]="datosGraficoComTat"></app-graficos-ingresos>
+      </div>
+    </mat-card-content>
+
+    <mat-card-footer class="example-card-footer">
+      <div class="example-button-row">
+        <button mat-flat-button (click)="descargarPDF(grafico)">Guardar</button>
+      </div>
+    </mat-card-footer>
+  </mat-card>
+</div>

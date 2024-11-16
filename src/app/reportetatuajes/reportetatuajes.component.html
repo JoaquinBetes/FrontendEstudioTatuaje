@@ -1,0 +1,27 @@
+<header-tattoo></header-tattoo>
+<div class="card-container">
+    <mat-card class="example-card" appearance="outlined">
+      <mat-card-content class="card-content">
+
+        <mat-card-title>{{tatuador.nombreCompleto}}</mat-card-title>
+
+        <div>
+            <p> Tatuajes realizados </p>
+            <app-graficos #grafico [datosGraficoTat]="datosGraficoTat"></app-graficos>
+        </div>
+
+        <div>
+            <p> Comisiones por tatuajes realizados </p>
+            <app-graficos-tat-com #graficoTat [datosGraficoTat]="datosGraficoComTat"></app-graficos-tat-com>
+        </div>
+
+      </mat-card-content>
+  
+      <mat-card-footer class="example-card-footer">
+        <!-- Chips para mostrar atributos o estado del cliente -->
+        <div class="example-button-row">
+          <button mat-flat-button (click)="descargarPDF(grafico, graficoTat)" >Guardar</button>
+        </div>
+      </mat-card-footer>
+    </mat-card>
+  </div>

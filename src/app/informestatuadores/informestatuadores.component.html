@@ -1,0 +1,6 @@
+<header-tattoo></header-tattoo>
+<mat-grid-list class="lista" cols="1" rowHeight="100px" gutterSize="20px">
+    @for ( tatuador of listaTatuadores; track tatuador ) {
+        <mat-grid-tile (click)="onOptionClick(tatuador)">{{tatuador.nombreCompleto}}</mat-grid-tile>
+    }
+</mat-grid-list>

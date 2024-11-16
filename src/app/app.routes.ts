@@ -11,7 +11,9 @@ import { ClienteDiseniosComponent } from './clientedisenios/clientedisenios.comp
 import { MisTurnosComponent } from './shared/misturnos/misturnos.component.js';
 import { PoliticasComponent } from './politicas/politicas.component.js';
 import { SueldosComponent } from './sueldos/sueldos.component.js'; 
-
+import { InformesTatuadoresComponent } from './informestatuadores/informestatuadores.component';
+import { ReporteTatuajesComponent } from './reportetatuajes/reportetatuajes.component.js';
+import { ReporteingresosComponent } from './reporteingresos/reporteingresos.component.js';
 export const routes: Routes = [
     {
         path: '',
@@ -72,5 +74,20 @@ export const routes: Routes = [
         path: 'encargado-sucursal/sueldos',
         title: 'Liquidaciones de sueldo',
         component: SueldosComponent
+      },
+      { 
+        path: 'encargado-sucursal/informes-tatuadores',
+        title: 'Informes tatuadores',
+        component: InformesTatuadoresComponent
+      },
+      { 
+        path: 'encargado-sucursal/reporte-tatuajes',
+        title: 'Informe Tatuajes',
+        component: ReporteTatuajesComponent
+      },
+      { 
+        path: 'encargado-sucursal/reporte-ingresos',
+        title: 'Informe Ingresos',
+        component: ReporteingresosComponent
       },
 ];
