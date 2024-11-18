@@ -1,0 +1,6 @@
+<header-tattoo></header-tattoo>
+<mat-grid-list class="lista" cols="1" rowHeight="100px" gutterSize="20px">
+    @for ( mes of listOptions; track mes ) {
+        <mat-grid-tile (click)="onOptionClick(mes)">{{mes}}</mat-grid-tile>
+    }
+</mat-grid-list>

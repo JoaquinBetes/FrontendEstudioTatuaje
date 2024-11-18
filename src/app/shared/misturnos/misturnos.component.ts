@@ -9,6 +9,7 @@ import { HttpClient } from '@angular/common/http';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { TattooSection } from '../tattooSection/tattooSection.component';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -30,6 +31,7 @@ import { TattooSection } from '../tattooSection/tattooSection.component';
 })
 export class MisTurnosComponent {
   readonly dialog = inject(MatDialog);
+  private router = inject(Router); // Inyecta el Router aquí
   http = inject(HttpClient);
   cdr = inject(ChangeDetectorRef);
   disenios: Diseño[] = [];
@@ -37,6 +39,10 @@ export class MisTurnosComponent {
   tatuador:boolean = false
   ngOnInit(): void {
     this.tatuador = sessionStorage.getItem('tatuador') == "true"
+    const esCliente: boolean = (sessionStorage.getItem('cliente') == 'true') ? true : false;
+    if(!( esCliente || this.tatuador )){
+      this.router.navigate(['/']);
+    }
     const dni = sessionStorage.getItem('dniUsuario');
     if(this.tatuador) {
       this.http.get<any>(`http://localhost:3000/api/turno/tatuador/${dni}`).subscribe(

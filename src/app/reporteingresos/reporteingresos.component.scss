@@ -42,7 +42,9 @@
   mat-form-field {
     width: 100%; // Hace que cada input ocupe todo el ancho disponible
   }
-  
+  .no-data{
+    height: 100vh;
+  }
   .example-card-footer {
     display: flex;
     justify-content:  space-between;

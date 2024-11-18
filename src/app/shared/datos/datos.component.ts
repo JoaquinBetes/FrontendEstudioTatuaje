@@ -61,9 +61,13 @@ export class DatosComponent implements OnInit, OnChanges {
 
   esTatuador = (sessionStorage.getItem('tatuador') == 'true') ? true : false;
   esEncargado = (sessionStorage.getItem('encargado') == 'true') ? true : false;
+  esCliente = (sessionStorage.getItem('cliente') == 'true') ? true : false;
   puedeEditar = this.esTatuador || this.esEncargado;
 
   ngOnInit(): void {
+    if(!(this.esCliente || this.esTatuador)){
+      this.router.navigate(['/']);
+    }
     if (this.dni) {
       this.cargarDatosUsuario();
     }

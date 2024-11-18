@@ -71,12 +71,8 @@ export class IngresarComponent {
 export class IngresarComponentDialog {
   readonly dialogRef = inject(MatDialogRef<IngresarComponentDialog>);
   dialog = inject(MatDialog);
-
   http = inject(HttpClient)
-
   tatuador = false;
-  
-
   hide = signal(true);
   dni = '';
   nombreCompleto = '';
@@ -115,7 +111,6 @@ export class IngresarComponentDialog {
   }
 
   openVentana(e:any) {
-    console.log(e)
     this.dialog.open(ventanaDialog,{data: e});
   }
   onToggleChange(event: MatSlideToggleChange) {
@@ -141,6 +136,7 @@ export class IngresarComponentDialog {
             sessionStorage.setItem('tatuador', JSON.stringify(this.tatuador));
             sessionStorage.setItem('log-in', 'true');
             sessionStorage.setItem('dniUsuario', this.dni);
+            sessionStorage.setItem('cliente', 'true')
             this.dialogRef.close(); // Cierra el diálogo después de la verificación exitosa
             this.router.navigate(['/home-cliente']);
         } else {

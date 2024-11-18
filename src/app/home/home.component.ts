@@ -23,6 +23,10 @@ export class HomeComponent {
     // Elimina el valor de 'encargado' del sessionStorage cuando se carga el componente
     sessionStorage.removeItem('encargado');
     sessionStorage.removeItem('sacar-turno')
+    sessionStorage.removeItem('mesSelecionado')
+    sessionStorage.removeItem('dni-tatuador')
+    sessionStorage.removeItem('comisiones')
+    sessionStorage.removeItem('politicas')
     this.http.get<any>(`http://localhost:3000/api/disenio/`).subscribe(
       (response: any) => {
         this.disenios = response.data;

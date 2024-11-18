@@ -10,7 +10,10 @@
     @if (isTatuador()){
       <button class="botones-header"  routerLink="/home-tatuador" mat-button>Tu perfil </button>
     }
-    @else {
+    @if (isEncargado()){
+      <button class="botones-header"  routerLink="/home-encargado" mat-button>Tu perfil </button>
+    }
+    @if (isCliente()) {
       <button class="botones-header"  routerLink="/home-cliente" mat-button>Tu perfil </button>
     }
     <button class="botones-header" (click)="logout()" routerLink="/" mat-button>Salir</button>

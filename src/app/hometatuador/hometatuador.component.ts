@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject} from '@angular/core';
+import { Router } from '@angular/router';
 import { HeaderTattoo } from '../shared/header/header.component.js';
 import { OptionsSectionComponent } from '../shared/optionsSection/optionsSection.component.js';
 
@@ -13,5 +14,13 @@ import { OptionsSectionComponent } from '../shared/optionsSection/optionsSection
   styleUrl: './hometatuador.component.scss'
 })
 export class HomeTatuadorComponent {
-  listOptions = ["Mis turnos", "Mis Diseños", "Mis datos", "Sueldo"];
+  private router = inject(Router); // Inyecta el Router aquí
+  listOptions = ["Mis turnos", "Mis Diseños", "Mis datos"];
+
+  ngOnInit(): void {
+    const esTatuador: boolean = (sessionStorage.getItem('tatuador') == 'true') ? true : false;
+    if(!esTatuador){
+      this.router.navigate(['/']);
+    }
+  }
 }

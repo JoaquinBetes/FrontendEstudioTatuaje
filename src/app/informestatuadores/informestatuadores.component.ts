@@ -27,7 +27,10 @@ export class InformesTatuadoresComponent {
   constructor(private router: Router) {}
 
   ngOnInit(): void {
-    sessionStorage.setItem('encargado', 'true');
+    const esEncargado: boolean = (sessionStorage.getItem('encargado') == 'true') ? true : false;
+    if(!esEncargado){
+      this.router.navigate(['/']);
+    }
     this.http.get<ResponseTatuadores>(`http://localhost:3000/api/tatuador/`).subscribe(
       (response: ResponseTatuadores) => {
         this.listaTatuadores = response.data

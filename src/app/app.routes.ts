@@ -14,6 +14,9 @@ import { SueldosComponent } from './sueldos/sueldos.component.js';
 import { InformesTatuadoresComponent } from './informestatuadores/informestatuadores.component';
 import { ReporteTatuajesComponent } from './reportetatuajes/reportetatuajes.component.js';
 import { ReporteingresosComponent } from './reporteingresos/reporteingresos.component.js';
+import { LoginEncargadoComponent } from './loginencargado/loginencargado.component.js';
+import { MesInformeComponent } from './mesinforme/mesinforme.component.js';
+
 export const routes: Routes = [
     {
         path: '',
@@ -89,5 +92,15 @@ export const routes: Routes = [
         path: 'encargado-sucursal/reporte-ingresos',
         title: 'Informe Ingresos',
         component: ReporteingresosComponent
+      },
+      { 
+        path: 'encargado-sucursal/reporte-mes',
+        title: 'Informe Meses',
+        component: MesInformeComponent
+      },
+      { 
+        path: 'encargado',
+        title: 'Encargado Ingreso',
+        component: LoginEncargadoComponent
       },
 ];

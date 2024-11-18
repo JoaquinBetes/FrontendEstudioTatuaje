@@ -51,6 +51,10 @@ export class PoliticasComponent {
 
 
   ngOnInit(): void {
+    const esEncargado: boolean = (sessionStorage.getItem('encargado') == 'true') ? true : false;
+    if(!esEncargado){
+      this.router.navigate(['/']);
+    }
     sessionStorage.setItem('politicas', 'true')
     this.http.get<any>(`http://localhost:3000/api/politicas/1`).subscribe(
       (response: any) => {

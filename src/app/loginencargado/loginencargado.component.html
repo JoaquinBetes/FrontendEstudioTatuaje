@@ -1,0 +1,26 @@
+<header-tattoo></header-tattoo>
+<div class="card-container">
+    <mat-card class="example-card" appearance="outlined">
+      <mat-card-content class="card-content">
+        <!-- Datos principales del encargado -->
+        <mat-form-field class="example-full-width">
+          <mat-label>DNI</mat-label>
+          <input matInput type="number" [(ngModel)]="dni">
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+          <mat-label>Email</mat-label>
+          <input matInput  [(ngModel)]="email" >
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+        <mat-label>Contraseña</mat-label>
+        <input matInput type="password" [(ngModel)]="contrasenia" >
+        </mat-form-field>  
+      </mat-card-content>
+  
+      <mat-card-footer class="example-card-footer">
+        <div class="example-button-row">
+          <button mat-flat-button (click)="ingresoEncargado()">Ingresar</button>
+        </div>
+      </mat-card-footer>
+    </mat-card>
+  </div>

@@ -34,11 +34,19 @@ export class HeaderTattoo {
   isTatuador(): boolean {
     return sessionStorage.getItem('tatuador') === 'true';
   }
+  isCliente(): boolean {
+    return sessionStorage.getItem('cliente') === 'true';
+  }
+  isEncargado(): boolean {
+    return sessionStorage.getItem('encargado') === 'true';
+  }
     // Método para salir
   logout(): void {
     sessionStorage.removeItem('dniUsuario'); 
+    sessionStorage.removeItem('encargado'); 
     sessionStorage.removeItem('log-in');
     sessionStorage.removeItem('tatuador'); 
+    sessionStorage.removeItem('cliente'); 
     this.router.navigate(['/']);
   }
 }

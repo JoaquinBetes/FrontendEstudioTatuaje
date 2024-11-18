@@ -2,7 +2,7 @@
     display: flex;
     justify-content: center; /* Centrar horizontalmente */
     margin-top: 20px;
-    height: 66vh;           /* Ocupa toda la altura de la pantalla */
+    height: 60vh;           /* Ocupa toda la altura de la pantalla */
   }
   
   .card-header {
@@ -10,10 +10,9 @@
     justify-content: center; /* Centrar horizontalmente */
     padding-bottom: 3.2vh;
   }
-  .titulo{
+  .card-title {
     font-size: 30px;
-    font-weight: bold;
-}
+  }
   
   .example-card {
     display: flex;
@@ -45,5 +44,4 @@
   .example-card-footer {
     display: flex;
     justify-content:  space-between;
-    padding: 0.9vw;
   }

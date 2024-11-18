@@ -57,6 +57,10 @@ export class SucursalComponent {
   private http = inject(HttpClient);
 
   ngOnInit(): void {
+    const esEncargado: boolean = (sessionStorage.getItem('encargado') == 'true') ? true : false;
+    if(!esEncargado){
+      this.router.navigate(['/']);
+    }
     this.cargarDatosUsuario();
   }
 

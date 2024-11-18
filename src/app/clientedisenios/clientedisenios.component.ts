@@ -9,6 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { HttpClient } from '@angular/common/http';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -31,6 +32,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 })
 export class ClienteDiseniosComponent {
   readonly dialog = inject(MatDialog);
+  private router = inject(Router); // Inyecta el Router aquí
   http = inject(HttpClient)
   cdr = inject(ChangeDetectorRef); 
   @ViewChild('inputCat') inputCat!: ElementRef<HTMLInputElement>;
@@ -152,6 +154,10 @@ export class ClienteDiseniosComponent {
   
 
   ngOnInit(): void {
+    const esCliente: boolean = (sessionStorage.getItem('cliente') == 'true') ? true : false;
+    if(!esCliente){
+      this.router.navigate(['/']);
+    }
     this.http.get<any>(`http://localhost:3000/api/disenio/cliente/dis`).subscribe(
       (response: any) => {
         this.disenios = response.data;

@@ -73,7 +73,6 @@ export class ventanaDialogTurno {
   isDisabled: boolean = false;
 
   constructor(){
-    console.log(this.turno)
     const tatuador=sessionStorage.getItem("tatuador")
     if (tatuador === 'true'){
       this.opciones = ["Confirmar", "Cancelar"]
@@ -143,7 +142,7 @@ export class ventanaDialogInforme {
 
   reporteIngresos():void {
     this.dialogRef.close();
-    this.router.navigate(['/encargado-sucursal/reporte-ingresos']);
+    this.router.navigate(['/encargado-sucursal/reporte-mes']);
   }
 
 }

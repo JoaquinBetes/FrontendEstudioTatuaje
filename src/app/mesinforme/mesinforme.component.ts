@@ -9,18 +9,19 @@ import { RegistroComponentDialog } from '../shared/registro/registro.component.j
 import {FormControl, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 
 @Component({
-  selector: 'app-encargado-tatuadores',
+  selector: 'app-mesinforme',
   standalone: true,
   imports: [
     MatGridListModule,
     HeaderTattoo,
     FormsModule
   ],
-  templateUrl: './encargadotatuadores.component.html',
-  styleUrl: './encargadotatuadores.component.scss'
+  templateUrl: './mesinforme.component.html',
+  styleUrl: './mesinforme.component.scss'
 })
-export class EncargadoTatuadoresComponent {
-  @Input() listOptions: Tatuador[] = []; // Acepta una lista de opciones
+export class MesInformeComponent {
+  listOptions: string[] = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+  'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']; // Acepta una lista de opciones
   private http = inject(HttpClient);
   readonly dialog = inject(MatDialog);
   constructor(private router: Router) {}
@@ -30,15 +31,6 @@ export class EncargadoTatuadoresComponent {
     if(!esEncargado){
       this.router.navigate(['/']);
     }
-    this.http.get<ResponseTatuadores>(`http://localhost:3000/api/tatuador/`).subscribe(
-      (response: ResponseTatuadores) => {
-        this.listOptions = response.data
-      },
-      (error) => {
-        console.error('Error al cargar los datos del Tatuador', error);
-        
-      }
-    );
   }
 
   openDialog(enterAnimationDuration: string, exitAnimationDuration: string): void {
@@ -50,9 +42,10 @@ export class EncargadoTatuadoresComponent {
     });
   }
 
-  onOptionClick(tatuador: Tatuador) {
-    sessionStorage.setItem('encargado','true')
-    sessionStorage.setItem('dniUsuario',tatuador.dni.toString())
-    this.router.navigate(['/datos-usuario']);
+  onOptionClick(mes:string) {
+    sessionStorage.setItem('mesSelecionado', mes)
+    this.router.navigate(['/encargado-sucursal/reporte-ingresos']);
   }
+
 }
+

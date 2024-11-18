@@ -14,6 +14,7 @@ import { GraficosComponent } from '../shared/graficos/graficos.component.js';
 import { Turno, TurnoConDiseño } from '../shared/interfaces.js';
 import { GraficosTatComComponent } from '../shared/graficos/graficostc.component.js';
 import { jsPDF } from "jspdf";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-reportetatuajes',
@@ -38,11 +39,19 @@ import { jsPDF } from "jspdf";
 })
 export class ReporteTatuajesComponent {
   private http = inject(HttpClient);
+  private router = inject(Router); // Inyecta el Router aquí
   tatuador= {
     nombreCompleto:""
   };
   datosGraficoTat: (string | number)[][]= [];
   datosGraficoComTat: (string | number)[][]= [];
+
+  ngOnInit(): void {
+    const esEncargado: boolean = (sessionStorage.getItem('encargado') == 'true') ? true : false;
+    if(!esEncargado){
+      this.router.navigate(['/']);
+    }
+  }
 
   constructor() {
     const dniRaw = sessionStorage.getItem('dni-tatuador'); // Puede ser string o null

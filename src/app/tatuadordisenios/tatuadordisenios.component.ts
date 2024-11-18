@@ -20,6 +20,7 @@ import {
   MatDialogTitle,
 } from '@angular/material/dialog';
 import { ChangeDetectorRef } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-tatuador-disenios',
@@ -39,10 +40,15 @@ import { ChangeDetectorRef } from '@angular/core';
 export class TatuadorDiseniosComponent {
   readonly dialog = inject(MatDialog);
   http = inject(HttpClient)
+  private router = inject(Router); // Inyecta el Router aquí
   cdr = inject(ChangeDetectorRef); 
   disenios: Diseño[] = [];
 
   ngOnInit(): void {
+    const esTatuador: boolean = (sessionStorage.getItem('tatuador') == 'true') ? true : false;
+    if(!esTatuador){
+      this.router.navigate(['/']);
+    }
     let dni = sessionStorage.getItem("dniUsuario")
     this.http.get<any>(`http://localhost:3000/api/disenio/tatuador/${dni}`).subscribe(
       (response: any) => {

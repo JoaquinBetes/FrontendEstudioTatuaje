@@ -16,10 +16,7 @@ export class GraficosIngresosComponent implements AfterViewInit, OnChanges {
   constructor(private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
-    setTimeout(() => {
-      this.drawChart();  // Llamamos a la función para dibujar el gráfico después de un pequeño retraso
-    }, 100);
-    
+    this.drawChart();  // Llamamos a la función para dibujar el gráfico después de un pequeño retraso
   }
 
   ngAfterViewInit(): void {
@@ -36,37 +33,39 @@ export class GraficosIngresosComponent implements AfterViewInit, OnChanges {
   }
 
   drawChart(): void {
-    if (this.datosGraficoTat && this.datosGraficoTat.length) {
-      // Crear la tabla de datos para Google Charts
-      const data = google.visualization.arrayToDataTable([
-        ['Tatuador', 'Comisiones'], // Encabezados de la tabla
-        ...this.datosGraficoTat // Datos del componente padre
-      ]);
-      // Usar DataView para crear una nueva columna de anotaciones
-      const view = new google.visualization.DataView(data);
-      view.setColumns([
-        0, 1,
-        {
-          calc: "stringify", // Calcular la anotación con el valor de la columna 1
-          sourceColumn: 1, // Usar la columna 1 para el valor
-          type: "string",
-          role: "annotation", // Establecer el rol como "annotation"
-        },
-      ]);
+    setTimeout(() => {
+      if (this.datosGraficoTat && this.datosGraficoTat.length) {
+        // Crear la tabla de datos para Google Charts
+        const data = google.visualization.arrayToDataTable([
+          ['Tatuador', 'Comisiones'], // Encabezados de la tabla
+          ...this.datosGraficoTat // Datos del componente padre
+        ]);
+        // Usar DataView para crear una nueva columna de anotaciones
+        const view = new google.visualization.DataView(data);
+        view.setColumns([
+          0, 1,
+          {
+            calc: "stringify", // Calcular la anotación con el valor de la columna 1
+            sourceColumn: 1, // Usar la columna 1 para el valor
+            type: "string",
+            role: "annotation", // Establecer el rol como "annotation"
+          },
+        ]);
+  
+        const options = {
+          title: 'Comisiones por Tatuador en pesos ($)',
+          is3D: true,
+          slices: { 0: { offset: 0.1 } },
+          chartArea: { width: '100%', height: '80%' },
+          legend: { position: 'labeled' },
+          pieSliceText: 'value', // Mostrar el valor sobre cada porción de la torta
+        };
+  
+        this.chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+        this.chart.draw(view, options); // Usar el DataView al dibujar el gráfico
+      }  // Llamamos a la función para dibujar el gráfico después de un pequeño retraso
+    }, 100);
 
-      const options = {
-        title: 'Comisiones por Tatuador en pesos ($)',
-        is3D: true,
-        slices: { 0: { offset: 0.1 } },
-        chartArea: { width: '100%', height: '80%' },
-        legend: { position: 'labeled' },
-        pieSliceText: 'value', // Mostrar el valor sobre cada porción de la torta
-
-      };
-
-      this.chart = new google.visualization.PieChart(document.getElementById('chart_div'));
-      this.chart.draw(view, options); // Usar el DataView al dibujar el gráfico
-    }
   }
 
   getChartImageURI(): string {
