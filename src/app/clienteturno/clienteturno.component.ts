@@ -166,8 +166,20 @@ export class ClienteTurnoComponent {
     }
     this.http.post<TurnoResponse>("http://localhost:3000/api/turno", turno).subscribe(
       (response: TurnoResponse) => {
-          this.openVentana(response.message); // Envía solo el mensaje
-          this.dialogRef.close(); // Cierra el diálogo después de crear el Turno
+        const mail ={
+          email: this.disenio.tatuador.email,
+          asunto: "Un turno a sido reservado",
+          mensaje: "Por favor confirmar el turno con 24hs de anticipación"
+      }
+        this.http.post<any>("http://localhost:3000/api/email/enviar-correo", mail).subscribe(
+          (response: any) => {
+              this.openVentana("Reserva completada. El tatuador será informado vía mail, en breve recibira una respuesta del tatuador"); // Envía solo el mensaje
+              this.dialogRef.close(); // Cierra el diálogo después de crear el Turno
+          },
+          error => {
+              this.openVentana(error.error.message);
+          }
+        );
       },
       error => {
           this.openVentana(error.error.message);

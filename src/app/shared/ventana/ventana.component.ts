@@ -96,8 +96,30 @@ export class ventanaDialogTurno {
        estado ="con" 
        this.http.put<any>(`http://localhost:3000/api/turno/${this.data.turno.id}`,{"estado": estado}).subscribe(
         (response: any) => { 
-          this.openVentana(`El turno fue confirmado`);
-          this.dialogRef.close();
+          let correo=""
+            let persona=""
+            if (sessionStorage.getItem("tatuador") === 'true'){
+              correo =this.data.turno.cliente.email
+              persona = "cliente"
+            }
+            else{
+              correo = this.data.turno.tatuador.email
+              persona = "tatuador"
+            }
+            const mail ={
+              email: correo,
+              asunto: "Un turno a sido confirmado",
+              mensaje: `El turno de fecha ${this.data.turno.fechaTurno.split('T')[0]} y hora ${this.data.turno.horaInicio} a sido confirmado por el tatuador`
+            }
+            this.http.post<any>("http://localhost:3000/api/email/enviar-correo", mail).subscribe(
+              (response: any) => {
+                  this.openVentana(`El turno a sido confirmado. El ${persona} será informado vía mail.`); // Envía solo el mensaje
+                  this.dialogRef.close(); // Cierra el diálogo después de crear el Turno
+              },
+              error => {
+                  this.openVentana(error.error.message);
+              }
+            );
         },
         (error:any) => {
           console.error('Error', error);
@@ -108,8 +130,31 @@ export class ventanaDialogTurno {
         (response: any) => {
           this.http.delete<any>(`http://localhost:3000/api/turno/${this.data.turno.id}`).subscribe(
           (response: any) => {
-            this.openVentana(`El turno fue cancelado`);
-            this.dialogRef.close();
+            let correo=""
+            let persona=""
+            if (sessionStorage.getItem("tatuador") === 'true'){
+              correo =this.data.turno.cliente.email
+              persona = "cliente"
+            }
+            else{
+              correo = this.data.turno.tatuador.email
+              persona = "tatuador"
+
+            }
+            const mail ={
+              email: correo,
+              asunto: "Un turno a sido cancelado",
+              mensaje: `El turno de fecha ${this.data.turno.fechaTurno.split('T')[0]} y hora ${this.data.turno.horaInicio} a sido cancelado`
+            }
+            this.http.post<any>("http://localhost:3000/api/email/enviar-correo", mail).subscribe(
+              (response: any) => {
+                  this.openVentana(`El turno a sido cancelado. El ${persona} será informado vía mail.`); // Envía solo el mensaje
+                  this.dialogRef.close(); // Cierra el diálogo después de crear el Turno
+              },
+              error => {
+                  this.openVentana(error.error.message);
+              }
+            );
           },
           (error:any) => {
             console.error('Error', error);

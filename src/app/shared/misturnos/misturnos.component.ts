@@ -51,7 +51,6 @@ export class MisTurnosComponent {
         for (let turno of response.data){
           turno.diseño.tatuador = turno.tatuador
           turno.diseño.cliente = turno.cliente
-          console.log(turno)
           turno.diseño.turno = turno
           this.disenios.push(turno.diseño)
         }
@@ -76,7 +75,6 @@ export class MisTurnosComponent {
       for (let turno of response.data){
         turno.diseño.tatuador = turno.tatuador
         turno.diseño.cliente = turno.cliente
-        console.log(turno)
         turno.diseño.turno = turno
         this.disenios.push(turno.diseño)
       }
