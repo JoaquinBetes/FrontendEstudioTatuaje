@@ -16,6 +16,7 @@ import { ReporteTatuajesComponent } from './reportetatuajes/reportetatuajes.comp
 import { ReporteingresosComponent } from './reporteingresos/reporteingresos.component.js';
 import { LoginEncargadoComponent } from './loginencargado/loginencargado.component.js';
 import { MesInformeComponent } from './mesinforme/mesinforme.component.js';
+import { FaqComponent } from './faq/faq.component.js';
 
 export const routes: Routes = [
     {
@@ -102,5 +103,10 @@ export const routes: Routes = [
         path: 'encargado',
         title: 'Encargado Ingreso',
         component: LoginEncargadoComponent
+      },
+      {
+        path: 'faq',
+        title: 'Preguntas frecuentes',
+        component: FaqComponent 
       },
 ];

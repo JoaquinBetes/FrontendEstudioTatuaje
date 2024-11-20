@@ -203,10 +203,10 @@ export class TatuadorDiseñosDialog {
       alert("Por favor ingresa un precio base");
       return;
     }
-    if (this.estado.length < 3) {
+/*     if (this.estado.length < 3) {
       alert("Por favor ingresa un estado valido");
       return;
-    }
+    } */
 
     const formData = new FormData();
     formData.append("categoria_codigo", this.categoria.toString());
@@ -221,14 +221,26 @@ export class TatuadorDiseñosDialog {
     if (this.imagen) {
       formData.append("imagen", this.imagen, this.imagen.name);
     } else {
-      alert("Debe seleccionar una imagen.");
+      this.openVentana("debes seleccionar una imagen");
       return;
     }
 
-    this.http.post<any>("http://localhost:3000/api/disenio", formData).subscribe(
+    this.http.get<any>("http://localhost:3000/api/politicas/1").subscribe(
       (response: any) => {
-        this.openVentana(response.message);
-        this.dialogRef.close();
+        if( (this.precioBase < response.data.precioBaseMinimo) || (this.descuento > response.data.descuentoMaximo) ){
+          this.openVentana("Los valores de descuento o el precio base no respetan las politicas del estudio");
+        }
+        else{
+          this.http.post<any>("http://localhost:3000/api/disenio", formData).subscribe(
+            (response: any) => {
+              this.openVentana(response.message);
+              this.dialogRef.close();
+            },
+            (error) => {
+              this.openVentana(error.error.message);
+            }
+          );
+        }
       },
       (error) => {
         this.openVentana(error.error.message);

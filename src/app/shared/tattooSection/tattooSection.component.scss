@@ -52,3 +52,15 @@ mat-grid-list {
 .cancelado{
   color:rgb(255, 81, 81);
 }
+
+.descuento{
+  display: flex;
+  gap: 10px;
+}
+
+/* Aplica estilos visuales para deshabilitar */
+mat-card-content.disabled {
+  pointer-events: none; /* Evita cualquier interacción */
+  opacity: 0.6; /* Indica visualmente que está deshabilitado */
+  filter: grayscale(80%); /* Opcional: Agrega un efecto visual */
+}

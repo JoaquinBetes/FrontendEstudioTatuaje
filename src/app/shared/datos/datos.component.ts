@@ -65,7 +65,7 @@ export class DatosComponent implements OnInit, OnChanges {
   puedeEditar = this.esTatuador || this.esEncargado;
 
   ngOnInit(): void {
-    if(!(this.esCliente || this.esTatuador)){
+    if(!(this.esCliente || this.esTatuador || this.esEncargado)){
       this.router.navigate(['/']);
     }
     if (this.dni) {

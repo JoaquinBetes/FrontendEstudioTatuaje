@@ -23,3 +23,21 @@
   color: #ffabf3;
   font-size: 1.7vw;
 }
+
+
+
+a[routerLink="/faq"] {
+  color: #ffabf3; /* Color similar a los botones */
+  text-decoration: none; /* Quita el subrayado por defecto */
+  font-size: 1.7vw; /* Coincide con los botones */
+  font-weight: bold; /* Negrita para destacar */
+  margin-top: 0.2rem; 
+  margin-left: 1.2rem; /* Separación del ícono */
+  display: inline-block; /* Asegura que el área de clic sea consistente */
+  transition: color 0.1s ease; /* Efecto de transición */
+}
+
+a[routerLink="/faq"]:hover {
+  color: #ffcdf5; /* Color al pasar el cursor */
+  text-shadow: 0 0 3px #ffabf254; /* Brillo sutil */
+}

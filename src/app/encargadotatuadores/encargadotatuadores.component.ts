@@ -33,10 +33,10 @@ export class EncargadoTatuadoresComponent {
     this.http.get<ResponseTatuadores>(`http://localhost:3000/api/tatuador/`).subscribe(
       (response: ResponseTatuadores) => {
         this.listOptions = response.data
+        console.log(this.listOptions)
       },
       (error) => {
         console.error('Error al cargar los datos del Tatuador', error);
-        
       }
     );
   }
@@ -51,7 +51,6 @@ export class EncargadoTatuadoresComponent {
   }
 
   onOptionClick(tatuador: Tatuador) {
-    sessionStorage.setItem('encargado','true')
     sessionStorage.setItem('dniUsuario',tatuador.dni.toString())
     this.router.navigate(['/datos-usuario']);
   }

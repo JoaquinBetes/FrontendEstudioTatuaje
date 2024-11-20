@@ -1,5 +1,5 @@
 <mat-grid-list cols="3"  gutterSize="3vw" rowHeight="8:12">
-  @for ( disenio of listOptions; track disenio.id){
+  @for ( disenio of sortedListOptions; track disenio.id){
     @if ( sacarTurno ) {
       <mat-grid-tile >
         <mat-card class="full-card" appearance="outlined" (click)="onDisenioClick(disenio)">
@@ -12,14 +12,21 @@
           <mat-card-content class="info">
             <p><b>Tamaño: </b> {{disenio.tamanioAproximado}} CM cuadrados</p>
             <p><b>Precio base: </b> ${{disenio.precioBase}}</p>
-            <p><b>Descuento: </b> {{disenio.descuento*100}}%</p>
+            <div class="descuento">
+              <b>Descuento:  </b>
+              <p class="confirmado">{{disenio.descuento*100}}%</p> 
+              @if (this.clienteEstado > 0){
+                <p class="cancelado">-5% estado deudor</p> 
+              }
+            </div>
           </mat-card-content>
         </mat-card>
       </mat-grid-tile>
     }
     @else{
       <mat-grid-tile >
-        <mat-card class="full-card" appearance="outlined" (click)="onTurnoClick(disenio)">
+        <mat-card class="full-card" appearance="outlined"  (click)="disenio.estado !== 'tat' ? onTurnoClick(disenio) : null"
+        [ngClass]="{'disabled-card': disenio.estado === 'tat'}">
           @if(!tatuador){
             <mat-card-header class="header-card">
               <div mat-card-avatar class="example-header-image"></div>
@@ -53,7 +60,8 @@
             </mat-card-content>
           }
           @else{
-            <mat-card-content class="info">
+            <mat-card-content class="info"   [ngClass]="{'disabled': disenio.estado === 'tat'}"
+            [attr.disabled]="disenio.estado === 'tat' ? true : null" >
               <p><b>Fecha: </b> {{disenio.turno.fechaTurno | date: 'dd MMMM yyyy'}} </p>
               <p><b>Horario: </b> {{disenio.turno.horaInicio}} hasta {{disenio.turno.horaFin}}</p>
               <div class="estado">

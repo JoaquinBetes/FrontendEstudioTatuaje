@@ -33,5 +33,6 @@ export class HomeEncargadoEstudioComponent {
     );
     sessionStorage.removeItem('sucursal')
     sessionStorage.removeItem('politicas')
+    sessionStorage.removeItem('tatuadorSueldo')
   }
 }

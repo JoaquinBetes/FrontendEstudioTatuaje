@@ -60,6 +60,17 @@ export class MisTurnosComponent {
             disenio.imagen = `http://localhost:3000${disenio.imagen}`;  // Concatenar solo el dominio base si la imagen tiene la ruta relativa
           }
         }
+              // Ordenar los diseños
+      this.disenios.sort((a, b) => {
+        // Ordenar por estado primero (priorizando 'pen')
+        if (a.turno.estado === 'pen' && b.turno.estado !== 'pen') return -1;
+        if (a.turno.estado !== 'pen' && b.turno.estado === 'pen') return 1;
+
+        // Si tienen el mismo estado, ordenar por fecha
+        const fechaB = new Date(a.turno.fechaTurno).getTime();
+        const fechaA = new Date(b.turno.fechaTurno).getTime();
+        return fechaA - fechaB; // Más cercano primero
+      });
               // Llama a detectChanges() para forzar la detección de cambios
       this.cdr.detectChanges();
       },  
@@ -84,13 +95,25 @@ export class MisTurnosComponent {
           disenio.imagen = `http://localhost:3000${disenio.imagen}`;  // Concatenar solo el dominio base si la imagen tiene la ruta relativa
         }
       }
-            // Llama a detectChanges() para forzar la detección de cambios
-    this.cdr.detectChanges();
+      // Ordenar los diseños
+      this.disenios.sort((a, b) => {
+        // Ordenar por estado primero (priorizando 'pen')
+        if (a.turno.estado === 'pen' && b.turno.estado !== 'pen') return -1;
+        if (a.turno.estado !== 'pen' && b.turno.estado === 'pen') return 1;
+
+        // Si tienen el mismo estado, ordenar por fecha
+        const fechaB = new Date(a.turno.fechaTurno).getTime();
+        const fechaA = new Date(b.turno.fechaTurno).getTime();
+        return fechaA - fechaB; // Más cercano primero
+      });
+      // Llama a detectChanges() para forzar la detección de cambios
+      this.cdr.detectChanges();
     },  
     (error:any) => {
       console.error('Error al cargar los datos de diseños', error);
     }
   );
   }
+  console.log(this.disenios)
   }
 }

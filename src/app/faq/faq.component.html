@@ -1,0 +1,20 @@
+<header-tattoo></header-tattoo>
+
+<div class="faq-container">
+  <h1>Preguntas Frecuentes</h1>
+  
+  @for (faq of faqs; track faq) {
+    <div class="faq-item">
+      <h2 (click)="toggleFaq(faq.id)">
+        {{ faq.pregunta }}
+      </h2>
+      @if (faq.mostrar) {
+        <div [innerHTML]="faq.respuesta"></div>
+      }
+    </div>
+  } @empty {
+    <div class="empty-message">
+      <p>No hay preguntas frecuentes disponibles en este momento.</p>
+    </div>
+  }
+</div>

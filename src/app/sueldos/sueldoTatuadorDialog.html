@@ -8,14 +8,20 @@
     </div>
     <div class="datos-liquidacion">
         <div>
-            @for( dato of datosLiquidacion ; track dato ){
-                <div class="datos">
-                    <span><u>Fecha:</u>  {{dato.fechaTatuaje}}</span>
-                    <span><u>Precio:</u>  ${{dato.precio}}</span>
-                    <span><u>Tatuador:</u>  ${{dato.gananciaTatuador}}</span>
-                    <span><u>Estudio:</u>  ${{dato.gananciaEstudio}}</span>
-                </div>
+            @if (datosLiquidacion.length === 0){
+                <span><u><b>No hay datos disponibles</b></u></span>
             }
+            @else{
+                @for( dato of datosLiquidacion ; track dato ){
+                    <div class="datos">
+                        <span><u>Fecha:</u>  {{dato.fechaTatuaje}}</span>
+                        <span><u>Precio:</u>  ${{dato.precio}}</span>
+                        <span><u>Tatuador:</u>  ${{dato.gananciaTatuador}}</span>
+                        <span><u>Estudio:</u>  ${{dato.gananciaEstudio}}</span>
+                    </div>
+                }
+            }
+
         </div>
         <div class="datos">
             <span><u><b>Total:</b></u>  ${{total}}</span>
@@ -26,5 +32,5 @@
   </mat-dialog-content>
   <mat-dialog-actions class="boton-reg-cont">
     <button class="boton-reg" (click)="emitirLiquidacion()" mat-button mat-dialog-close>Emitir</button>
-    <button class="boton-reg" mat-button  cdkFocusInitial>Guardar</button>
+    <button class="boton-reg" mat-button  (click)="guardarLiquidacion()" cdkFocusInitial>Guardar</button>
   </mat-dialog-actions>

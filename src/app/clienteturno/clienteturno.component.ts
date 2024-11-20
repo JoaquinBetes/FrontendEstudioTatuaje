@@ -88,10 +88,10 @@ export class ClienteTurnoComponent {
     const horarios = [];
     let horaActual = new Date(`1970-01-01T${objetoHorario.horaApertura}`);
     const horaFinal = new Date(`1970-01-01T${objetoHorario.horaCierre}`);
-    // Si la hora de cierre es "00:00:00", interpretamos que es a medianoche del día siguiente
+/*     // Si la hora de cierre es "00:00:00", interpretamos que es a medianoche del día siguiente
     if (horaFinal.getTime() === horaActual.getTime()) {
         horaFinal.setDate(horaFinal.getDate() + 1); // Añadir un día
-    }
+    } */
     // Generar horarios en intervalos de una hora
     while (horaActual < horaFinal) {
         // Formatear la hora en "HH:mm:ss"
@@ -99,7 +99,7 @@ export class ClienteTurnoComponent {
         horarios.push(horaString);
 
         // Avanzar una hora
-        horaActual.setHours(horaActual.getHours() + 1);
+        horaActual.setHours(horaActual.getHours() + 2);
     }
     return horarios;
 }
@@ -107,13 +107,13 @@ export class ClienteTurnoComponent {
   openVentana(e:any) {
     this.dialog.open(ventanaDialog,{data: e});
   }
-   sumarUnaHora(hora: string): string {
+   sumarDosHoras(hora: string): string {
     // Convertir la hora en formato HH:MM:SS a un objeto Date, usando una fecha arbitraria
     const [horas, minutos, segundos] = hora.split(':').map(Number);
     // Crear un objeto Date con una fecha arbitraria (por ejemplo, 1970-01-01)
     const fecha = new Date(0, 0, 0, horas, minutos, segundos); // 0 para el día, mes y año
     // Sumar una hora (3600000 ms)
-    fecha.setHours(fecha.getHours() + 1);
+    fecha.setHours(fecha.getHours() + 2);
     // Obtener la hora resultante en formato HH:MM:SS
     const nuevaHora = fecha.toTimeString().slice(0, 8); // Obtener la hora en formato HH:MM:SS
     return nuevaHora;
@@ -156,7 +156,7 @@ export class ClienteTurnoComponent {
   reservarTurno(){
     const turno: Turno = {
       hora_inicio: this.selectedValue,
-      hora_fin: this.sumarUnaHora(this.selectedValue),
+      hora_fin: this.sumarDosHoras(this.selectedValue),
       fecha_turno: this.fechaTurno,
       tatuador_dni: this.disenio.tatuador.dni,
       cliente_dni: Number.parseInt(sessionStorage.getItem('dniUsuario') || '0'),

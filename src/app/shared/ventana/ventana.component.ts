@@ -71,6 +71,7 @@ export class ventanaDialogTurno {
   selectedValue: string = "";
   opciones: string[];
   isDisabled: boolean = false;
+  esCliente: boolean = (sessionStorage.getItem('cliente') == 'true') ? true : false;
 
   constructor(){
     const tatuador=sessionStorage.getItem("tatuador")
@@ -82,6 +83,20 @@ export class ventanaDialogTurno {
       this.opciones = ["Cancelar"]
     }
   }
+
+  esMenosDe24Horas(turnoFecha: string, turnoHora: string): boolean {
+    // Combina la fecha y la hora del turno en un solo objeto Date
+    const turnoFechaHora = new Date(`${turnoFecha.split('T')[0]}T${turnoHora}`);
+    // Obtén la fecha y hora actuales
+    const ahora = new Date();
+    // Calcula la diferencia en milisegundos
+    const diferenciaMs = turnoFechaHora.getTime() - ahora.getTime();
+    // Convierte la diferencia a horas
+    const diferenciaHoras = diferenciaMs / (1000 * 60 * 60);
+    // Retorna si está a menos de 24 horas
+    return diferenciaHoras > 0 && diferenciaHoras <= 24;
+  }
+
   closeDialog() {
     // Aquí rediriges al cerrar el diálogo
     this.dialogRef.close();
@@ -126,42 +141,49 @@ export class ventanaDialogTurno {
         });
     }
     if (this.selectedValue === "Cancelar"){
-      this.http.put<any>(`http://localhost:3000/api/disenio/${this.data.turno.diseño.id}`,{"estado":"dis"}).subscribe(
-        (response: any) => {
-          this.http.delete<any>(`http://localhost:3000/api/turno/${this.data.turno.id}`).subscribe(
+      if(this.esMenosDe24Horas(this.data.turno.fechaTurno, this.data.turno.horaInicio) && this.esCliente){
+        this.openVentana("No puede cancelar un turno con menos de 24hrs de anticipación");
+        this.dialogRef.close(); // Cierra el diálogo después de crear el Turno
+      }
+      else{
+        this.http.put<any>(`http://localhost:3000/api/disenio/${this.data.turno.diseño.id}`,{"estado":"dis"}).subscribe(
           (response: any) => {
-            let correo=""
-            let persona=""
-            if (sessionStorage.getItem("tatuador") === 'true'){
-              correo =this.data.turno.cliente.email
-              persona = "cliente"
-            }
-            else{
-              correo = this.data.turno.tatuador.email
-              persona = "tatuador"
-
-            }
-            const mail ={
-              email: correo,
-              asunto: "Un turno a sido cancelado",
-              mensaje: `El turno de fecha ${this.data.turno.fechaTurno.split('T')[0]} y hora ${this.data.turno.horaInicio} a sido cancelado`
-            }
-            this.http.post<any>("http://localhost:3000/api/email/enviar-correo", mail).subscribe(
-              (response: any) => {
-                  this.openVentana(`El turno a sido cancelado. El ${persona} será informado vía mail.`); // Envía solo el mensaje
-                  this.dialogRef.close(); // Cierra el diálogo después de crear el Turno
-              },
-              error => {
-                  this.openVentana(error.error.message);
+            this.http.delete<any>(`http://localhost:3000/api/turno/${this.data.turno.id}`).subscribe(
+            (response: any) => {
+              let correo=""
+              let persona=""
+              if (sessionStorage.getItem("tatuador") === 'true'){
+                correo =this.data.turno.cliente.email
+                persona = "cliente"
               }
-            );
-          },
-          (error:any) => {
-            console.error('Error', error);
-          });
-          this.cdr.detectChanges();
-        }
-      );
+              else{
+                correo = this.data.turno.tatuador.email
+                persona = "tatuador"
+  
+              }
+              const mail ={
+                email: correo,
+                asunto: "Un turno a sido cancelado",
+                mensaje: `El turno de fecha ${this.data.turno.fechaTurno.split('T')[0]} y hora ${this.data.turno.horaInicio} a sido cancelado`
+              }
+              this.http.post<any>("http://localhost:3000/api/email/enviar-correo", mail).subscribe(
+                (response: any) => {
+                    this.openVentana(`El turno a sido cancelado. El ${persona} será informado vía mail.`); // Envía solo el mensaje
+                    this.dialogRef.close(); // Cierra el diálogo después de crear el Turno
+                },
+                error => {
+                    this.openVentana(error.error.message);
+                }
+              );
+            },
+            (error:any) => {
+              console.error('Error', error);
+            });
+            this.cdr.detectChanges();
+          }
+        );
+      }
+
     }
   }
 }
