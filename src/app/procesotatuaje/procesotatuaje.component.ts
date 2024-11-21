@@ -218,10 +218,10 @@ export class ProcesotatuajeComponent {
       alert("Por favor ingresa un precio base");
       return;
     }
-    if (!this.precioFinal) {
+/*     if (!this.precioFinal) {
       alert("Por favor ingresa un precio final");
       return;
-    }
+    } */
     if (this.estado.length < 3) {
       alert("Por favor ingresa un estado valido");
       return;

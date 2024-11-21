@@ -10,7 +10,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { TattooSection } from '../tattooSection/tattooSection.component';
 import { Router } from '@angular/router';
-
+import { ventanaDialog } from '../ventana/ventana.component.js';
 
 @Component({
   selector: 'app-misturnos',
@@ -37,6 +37,7 @@ export class MisTurnosComponent {
   disenios: Diseño[] = [];
   turnos: Turno[] = [];
   tatuador:boolean = false
+
   ngOnInit(): void {
     this.tatuador = sessionStorage.getItem('tatuador') == "true"
     const esCliente: boolean = (sessionStorage.getItem('cliente') == 'true') ? true : false;
@@ -53,6 +54,9 @@ export class MisTurnosComponent {
           turno.diseño.cliente = turno.cliente
           turno.diseño.turno = turno
           this.disenios.push(turno.diseño)
+        }
+        if (this.disenios.length == 0){
+          this.openVentana("No hay turnos asignados al tatuador")
         }
         for (let disenio of this.disenios) {
           // Verifica que la URL ya esté correctamente formada
@@ -89,6 +93,9 @@ export class MisTurnosComponent {
         turno.diseño.turno = turno
         this.disenios.push(turno.diseño)
       }
+      if (this.disenios.length == 0){
+        this.openVentana("No hay turnos asignados al cliente")
+      }
       for (let disenio of this.disenios) {
         // Verifica que la URL ya esté correctamente formada
         if (disenio.imagen && !disenio.imagen.startsWith('http://')) {
@@ -114,6 +121,10 @@ export class MisTurnosComponent {
     }
   );
   }
-  console.log(this.disenios)
   }
+
+  openVentana(e:any) {
+    this.dialog.open(ventanaDialog,{data: e});
+  }
+
 }

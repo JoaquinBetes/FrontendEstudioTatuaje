@@ -65,6 +65,7 @@ export class TattooSection {
   }
 
   ngOnInit(): void {
+    console.log(this.listOptions)
     const esCliente: boolean = (sessionStorage.getItem('cliente') == 'true') ? true : false;
     if(esCliente){
       const dniStr = sessionStorage.getItem('dniUsuario');

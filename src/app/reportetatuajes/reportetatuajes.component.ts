@@ -15,6 +15,8 @@ import { Turno, TurnoConDiseño } from '../shared/interfaces.js';
 import { GraficosTatComComponent } from '../shared/graficos/graficostc.component.js';
 import { jsPDF } from "jspdf";
 import { Router } from '@angular/router';
+import { ventanaDialog } from '../shared/ventana/ventana.component.js';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-reportetatuajes',
@@ -38,6 +40,7 @@ import { Router } from '@angular/router';
   styleUrl: './reportetatuajes.component.scss'
 })
 export class ReporteTatuajesComponent {
+  readonly dialog = inject(MatDialog);
   private http = inject(HttpClient);
   private router = inject(Router); // Inyecta el Router aquí
   tatuador= {
@@ -99,10 +102,6 @@ export class ReporteTatuajesComponent {
           }
         });
 
-        console.log(turnosPorMes); // Verifica el resultado
-        console.log(comisionesPorMes)
-
-
         // Formar el arreglo con los datos para la gráfica
         this.datosGraficoTat = meses.map((mes, index) => [mes, turnosPorMes[index]]);
         this.datosGraficoComTat = meses.map((mes, index) => [mes, comisionesPorMes[index]]);
@@ -113,6 +112,10 @@ export class ReporteTatuajesComponent {
         console.error('Error al cargar los datos del Tatuador', error);
       }
     );
+  }
+
+  openVentana(e:any) {
+    this.dialog.open(ventanaDialog,{data: e});
   }
 
   descargarPDF(graficosComponent: GraficosComponent, graficosComponentTat:GraficosTatComComponent): void {
@@ -130,6 +133,8 @@ export class ReporteTatuajesComponent {
       // Añadir el segundo gráfico a la segunda página
       pdf.addImage(chartTatImageURI, 'PNG', 15, 20, anchoImagen, altoImagen);
       pdf.save(`${this.tatuador.nombreCompleto}-Comisiones.pdf`);
+      this.openVentana("Reporte guardado!")
+      
     } else {
       console.error('No se pudo obtener la imagen del gráfico');
     }

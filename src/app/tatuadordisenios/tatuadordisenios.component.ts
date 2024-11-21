@@ -190,7 +190,7 @@ export class TatuadorDiseñosDialog {
   }
 
   guardarDisenio() {
-    if (!this.tamanio) {
+/*     if (!this.tamanio) {
       alert("Por favor ingresa un tamaño aproximado.");
       return;
     }
@@ -202,7 +202,7 @@ export class TatuadorDiseñosDialog {
     if (!this.precioBase) {
       alert("Por favor ingresa un precio base");
       return;
-    }
+    } */
 /*     if (this.estado.length < 3) {
       alert("Por favor ingresa un estado valido");
       return;

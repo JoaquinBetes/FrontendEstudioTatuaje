@@ -123,12 +123,12 @@ export class ventanaDialogTurno {
             }
             const mail ={
               email: correo,
-              asunto: "Un turno a sido confirmado",
+              asunto: "Un turno ha sido confirmado",
               mensaje: `El turno de fecha ${this.data.turno.fechaTurno.split('T')[0]} y hora ${this.data.turno.horaInicio} a sido confirmado por el tatuador`
             }
             this.http.post<any>("http://localhost:3000/api/email/enviar-correo", mail).subscribe(
               (response: any) => {
-                  this.openVentana(`El turno a sido confirmado. El ${persona} será informado vía mail.`); // Envía solo el mensaje
+                  this.openVentana(`El turno ha sido confirmado. El ${persona} será informado vía mail.`); // Envía solo el mensaje
                   this.dialogRef.close(); // Cierra el diálogo después de crear el Turno
               },
               error => {
@@ -163,8 +163,8 @@ export class ventanaDialogTurno {
               }
               const mail ={
                 email: correo,
-                asunto: "Un turno a sido cancelado",
-                mensaje: `El turno de fecha ${this.data.turno.fechaTurno.split('T')[0]} y hora ${this.data.turno.horaInicio} a sido cancelado`
+                asunto: "Un turno ha sido cancelado",
+                mensaje: `El turno de fecha ${this.data.turno.fechaTurno.split('T')[0]} y hora ${this.data.turno.horaInicio} ha sido cancelado`
               }
               this.http.post<any>("http://localhost:3000/api/email/enviar-correo", mail).subscribe(
                 (response: any) => {

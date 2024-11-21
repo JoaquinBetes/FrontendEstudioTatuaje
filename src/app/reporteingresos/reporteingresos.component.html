@@ -20,7 +20,7 @@
       <mat-card-content class="card-content">
         <mat-card-title>{{mes}}, {{anioActual}}</mat-card-title>
         <div>
-          <p>Ingresos por comisiones</p>
+          <p>Total ingresos por comisiones: ${{total}} </p>
           <!-- Componente de gráficos que recibe los datos de comisiones -->
           <app-graficos-ingresos #grafico [datosGraficoTat]="datosGraficoComTat"></app-graficos-ingresos>
         </div>

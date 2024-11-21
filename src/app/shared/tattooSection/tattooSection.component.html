@@ -62,7 +62,7 @@
           @else{
             <mat-card-content class="info"   [ngClass]="{'disabled': disenio.estado === 'tat'}"
             [attr.disabled]="disenio.estado === 'tat' ? true : null" >
-              <p><b>Fecha: </b> {{disenio.turno.fechaTurno | date: 'dd MMMM yyyy'}} </p>
+              <p><b>Fecha: </b> {{ disenio.turno.fechaTurno | date: 'dd MMMM yyyy' : '+0000' }} </p>
               <p><b>Horario: </b> {{disenio.turno.horaInicio}} hasta {{disenio.turno.horaFin}}</p>
               <div class="estado">
                 @if (disenio.turno.estado === "pen"){

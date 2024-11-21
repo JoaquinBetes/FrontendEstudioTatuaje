@@ -74,7 +74,7 @@ export class SucursalComponent {
 
   private cargarDatosUsuario(): void {
     
-    this.http.get<any>(`http://localhost:3000/api/sucursal/2`).subscribe(
+    this.http.get<any>(`http://localhost:3000/api/sucursal/1`).subscribe(
       (response: any) => {
         this.datosSucursal.pais = response.data.pais;
         this.datosSucursal.localidad = response.data.localidad;
@@ -93,7 +93,7 @@ export class SucursalComponent {
 
   guardarEdicion(): void {
     // Primero actualizamos la sucursal
-    this.http.put(`http://localhost:3000/api/sucursal/2`, this.datosSucursal).subscribe(
+    this.http.put(`http://localhost:3000/api/sucursal/1`, this.datosSucursal).subscribe(
       (response: any) => {
         // Creamos un array de observables para las actualizaciones de los horarios
         const horarioUpdates = this.dataSource.map(horario => 

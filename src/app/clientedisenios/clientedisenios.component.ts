@@ -10,6 +10,7 @@ import { HttpClient } from '@angular/common/http';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { Router } from '@angular/router';
+import { ventanaDialog } from '../shared/ventana/ventana.component.js';
 
 
 @Component({
@@ -94,6 +95,10 @@ export class ClienteDiseniosComponent {
     );
   }
 
+  openVentana(e:any) {
+    this.dialog.open(ventanaDialog,{data: e});
+  }
+
   displayOption(option: { codigo: number; descripcion: string } | null): string {
     return option ? option.descripcion : '';
   }
@@ -137,6 +142,9 @@ export class ClienteDiseniosComponent {
     this.http.get<any>(`http://localhost:3000/api/disenio/cliente/${this.tatuador}/${this.categoria}/dis`).subscribe(
       (response: any) => {
         this.disenios = response.data;
+        if (this.disenios.length == 0){
+          this.openVentana("No hay diseños disponibles que cumplan las condiciones")
+        }
         for (let disenio of this.disenios) {
           // Verifica que la URL ya esté correctamente formada
           if (disenio.imagen && !disenio.imagen.startsWith('http://')) {

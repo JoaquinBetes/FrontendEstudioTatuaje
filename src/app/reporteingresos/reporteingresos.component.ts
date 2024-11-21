@@ -11,6 +11,8 @@ import { HeaderTattoo } from '../shared/header/header.component';
 import { GraficosIngresosComponent } from '../shared/graficos/graficosIngresos.component';
 import { jsPDF } from "jspdf";
 import { Router } from '@angular/router';
+import { ventanaDialog } from '../shared/ventana/ventana.component.js';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-reporteingresos',
@@ -32,9 +34,11 @@ import { Router } from '@angular/router';
 })
 export class ReporteingresosComponent {
   private http = inject(HttpClient);
+  readonly dialog = inject(MatDialog);
   private router = inject(Router); // Inyecta el Router aquí
   mes: string|null = '';
   anioActual: number =0;
+  total: number = 0;
   tatuador = {
     nombreCompleto: ''
   };
@@ -50,6 +54,10 @@ export class ReporteingresosComponent {
 
   constructor() {
     this.obtenerDatos();
+  }
+
+  openVentana(e:any) {
+    this.dialog.open(ventanaDialog,{data: e});
   }
 
   obtenerNumeroDeMes(mes: string | null): number | null {
@@ -83,6 +91,7 @@ export class ReporteingresosComponent {
             turno.tatuador.nombreCompleto,
             turno.diseño.precioFinal * comisiones
           ];
+          this.total +=  turno.diseño.precioFinal * comisiones
 
           let encontrado = this.datosGraficoComTat.find(
             fila => fila[0] === turno.tatuador.nombreCompleto
@@ -94,8 +103,14 @@ export class ReporteingresosComponent {
             this.datosGraficoComTat.push(estats);
           }
         });
-
-        console.log('Datos para el gráfico:', this.datosGraficoComTat.length);
+        if(mesSelect){
+          const currentYear = new Date().getFullYear();
+          const selectedMonthDate = new Date(currentYear, mesSelect - 1);
+          if (selectedMonthDate.getMonth() === new Date().getMonth() && selectedMonthDate.getFullYear() === new Date().getFullYear()) {
+            // Si el mes seleccionado es el actual
+            this.openVentana("El mes selecionado aun esta en transcurso. No se aconseja emitir comprobantes al ser suceptible a cambios")
+          }
+        }
       },
       (error) => {
         console.error('Error al cargar los datos del Tatuador', error);
@@ -109,6 +124,7 @@ export class ReporteingresosComponent {
       const pdf = new jsPDF();
       pdf.addImage(chartImageURI, 'PNG', 15, 40, 180, 160);
       pdf.save(`${this.mes}-${this.anioActual}-Comisiones.pdf`);
+      this.openVentana("Reporte de ingresos guardado")
     } else {
       console.error('No se pudo obtener la imagen del gráfico');
     }

@@ -164,6 +164,7 @@ export class ClienteTurnoComponent {
       indicaciones: this.indicaciones,
       estado: 'pen'
     }
+
     this.http.post<TurnoResponse>("http://localhost:3000/api/turno", turno).subscribe(
       (response: TurnoResponse) => {
         const mail ={
