@@ -150,7 +150,7 @@ export class TatuadorDiseñosDialog {
   onEstadoSelected(selectedLabel: string): void {
     const selectedEstado = this.estados.find(estado => estado.label === selectedLabel);
     this.estado = selectedEstado ? selectedEstado.value : '';
-    console.log("Estado asignado:", this.estado);
+    
   }
 
   displayOption(option: { codigo: number; descripcion: string } | null): string {

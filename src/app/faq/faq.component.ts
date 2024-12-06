@@ -124,13 +124,15 @@ export class FaqComponent {
   }
 
   ngOnInit(): void {
-    this.http.get<any>(`http://localhost:3000/api/sucursal/2`).subscribe(
+    this.http.get<any>(`http://localhost:3000/api/sucursal/1`).subscribe(
       (response: any) => {
         this.localidad = response.data.localidad;
         this.pais = response.data.pais;
         this.direccion = response.data.direccion;
         this.departamento = response.data.departamento;
         this.piso = response.data.piso;
+
+        console.log(response.data)
 
         // Actualiza la respuesta de la pregunta de ubicación con los datos obtenidos
         const respuestaUbicacion = `
